@@ -993,7 +993,7 @@ if(visionMask){
   title.style.opacity=1-definitionExit;
   english.style.opacity=1-definitionExit;
   productTitle.classList.remove('is-top');
-  productTitle.style.opacity=String(change*(1-handoff));
+  productTitle.style.opacity=String(change*(1-railOut)); // 카드와 함께 사라짐(제목만 남는 빈 화면 방지)
   productTitle.style.transform='none';
   detail.style.opacity=String(change*(1-smooth((p-.66)/.05))*(1-handoff)); // 제품 설명(쌓인 카드 옆): 카드가 펼쳐지기 직전까지 표시
   first.style.opacity=reduce.matches?0:smooth(p/.07)*(1-smooth((p-.10)/.035));
@@ -1018,7 +1018,7 @@ if(visionMask){
   carousel.classList.toggle('is-spread',spread===1);
   if(spread<1&&wasSpread)setRailOffset(0);
   wasSpread=spread===1;
-  const firstIntroRaw=clamp((p-.40)/.14);
+  const firstIntroRaw=clamp((p-.28)/.14); // 3차: 제목이 뜨는 순간 첫 카드도 올라오기 시작 — 제목만 덩그러니 남는 빈 화면 제거
   const firstIntro=1-Math.pow(1-firstIntroRaw,3.2);
   cards.forEach((card,i)=>{
    if(i<4||i>7){card.style.opacity=spread===1?'1':'0';card.style.transform='';card.style.filter='';return;} // 반복 세트는 레일이 오른쪽에 고정된 뒤에만 표시해 왼쪽 제목 영역을 비운다
