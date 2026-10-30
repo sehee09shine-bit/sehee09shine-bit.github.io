@@ -994,7 +994,7 @@ if(visionMask){
   productTitle.classList.remove('is-top');
   productTitle.style.opacity=String(change*(1-handoff));
   productTitle.style.transform='none';
-  detail.style.opacity=0;
+  detail.style.opacity=String(change*(1-smooth((p-.66)/.05))*(1-handoff)); // 제품 설명(쌓인 카드 옆): 카드가 펼쳐지기 직전까지 표시
   first.style.opacity=reduce.matches?0:smooth(p/.07)*(1-smooth((p-.10)/.035));
   second.style.opacity=reduce.matches?0:smooth((p-.14)/.04)*(1-smooth((p-.24)/.04));
   if(third){const t=thirdProgress;third.style.opacity=reduce.matches?0:smooth(t/.18)*(1-smooth((t-.82)/.18));
