@@ -944,9 +944,10 @@ if(visionMask){
   const linked=mask.classList.contains('has-linked-flow');
   const p=linked?clamp(raw/.58):raw;
   const handoff=linked?smooth((raw-.54)/.06):0;
+  const railOut=linked?smooth((raw-.54)/.03):0,stageIn=linked?smooth((raw-.57)/.03):0; // 3차: 카드가 완전히 사라진 뒤 다음 장면(HOW IS IT DONE?) 등장 — 겹쳐 비치지 않게
   if(linked&&flowStage){
    const textEnter=smooth((raw-.572)/.028);
-   flowStage.style.opacity=handoff;flowStage.style.pointerEvents=handoff===1?'auto':'none';
+   flowStage.style.opacity=stageIn;flowStage.style.pointerEvents=handoff===1?'auto':'none';
    flowStage.style.setProperty('--question-enter-y',`${24*(1-textEnter)}px`);
    flowStage.style.setProperty('--question-enter-opacity',textEnter);
   }
@@ -1011,7 +1012,7 @@ if(visionMask){
   carousel.style.transform='none';
   carousel.style.setProperty('--project-width',`${frame.offsetWidth}px`);
   carousel.style.setProperty('--project-gap','24px');
-  carousel.style.opacity=1-handoff; // 카드 레일은 계속 보이고 제목 영역을 비운 오른쪽으로 펼쳐진다
+  carousel.style.opacity=1-railOut; // 카드 레일은 계속 보이고 제목 영역을 비운 오른쪽으로 펼쳐진다
   carousel.style.pointerEvents=spread===1&&handoff<.6?'auto':'none'; // 3차: 카드가 보이는 동안은 호버(뒤집기) 가능
   carousel.dataset.unfolding=String(spread<1);
   carousel.classList.toggle('is-spread',spread===1);
