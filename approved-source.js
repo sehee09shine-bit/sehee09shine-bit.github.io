@@ -873,9 +873,26 @@ if(visionMask){
  const first=mask.querySelector('.unicorn-mask-first'),second=mask.querySelector('.unicorn-mask-second');
  const title=mask.querySelector('.unicorn-mask-title'),english=mask.querySelector('.unicorn-mask-english');
  const productTitle=document.createElement('div');productTitle.className='unicorn-stack-title';
- productTitle.innerHTML='<span>WE CALL THEM</span><span>UNICORN<br> PRODUCTS</span>';stage.append(productTitle); // br 뒤 공백: 한 줄로 합칠 때 단어 사이 띄움
+ productTitle.innerHTML='<span>WE CALL THEM</span><span>UNICORN<br>PRODUCTS</span>';stage.append(productTitle);
+ function fitTopProductTitle(){
+  const font=Math.max(36,Math.min(innerWidth*.042,86));
+  productTitle.style.setProperty('font-size',`${font}px`,'important');
+  const headline=productTitle.querySelector('span+span');
+  const range=document.createRange();range.selectNodeContents(headline);
+  const widest=Math.max(0,...Array.from(range.getClientRects(),r=>r.width));
+  const mobile=innerWidth<768;
+  const available=mobile?Math.max(0,Math.min(stage.clientWidth,innerWidth-48)):Math.max(0,Math.min(Math.max(300,Math.min(innerWidth*.31,640)),innerWidth*.32)-12);
+  const fittedWidth=Math.min(widest,available);
+  if(widest>available&&widest>0)productTitle.style.setProperty('font-size',`${font*available/widest}px`,'important');
+  productTitle.dataset.headlineWidth=String(fittedWidth);
+  productTitle.style.setProperty('width',`${mobile?Math.min(innerWidth,stage.clientWidth):fittedWidth}px`,'important');
+  const label=productTitle.querySelector('span:first-child');
+  label.style.setProperty('width',`${fittedWidth}px`,'important');
+  label.style.setProperty('margin-inline','auto','important');
+ }
  // Measure the actual display font against the caption column at each viewport size.
  function fitProductCaptions(){
+  if(productTitle.classList.contains('is-top')){fitTopProductTitle();return;}
   for(const el of [title,productTitle]){
    el.style.removeProperty('font-size');
    const base=parseFloat(getComputedStyle(el).fontSize),available=el.clientWidth-8;
@@ -907,7 +924,7 @@ if(visionMask){
   stage.style.setProperty('--unicorn-card-width',`${mask.querySelector('.unicorn-mask-frame').offsetWidth}px`);
  }
  sizeCards();addEventListener('resize',sizeCards);
- let wasSpread=false, easedProgress=null, lastPaint=0, thirdProgress=0, thirdPassed=false;
+ let wasSpread=false, easedProgress=null, lastPaint=0, thirdProgress=0, thirdPassed=false, topTitleMode=false;
  const third=mask.querySelector('.unicorn-mask-third');
  function paint(now=performance.now()){
   if(mask.hidden)return;
@@ -971,49 +988,49 @@ if(visionMask){
   }
   const change=reduce.matches?1:smooth((p-.275)/.035);
   const definitionExit=reduce.matches?1:smooth((p-.23)/.035);
-  const spread=reduce.matches?1:smooth((p-.70)/.14);
+  const spread=reduce.matches?1:smooth((p-.70)/.045);
   title.style.opacity=1-definitionExit;
   english.style.opacity=1-definitionExit;
-  const titleExit=linked?smooth((raw-.54)/.034):0;
-  const titleTop=spread===1; // 3차: 카드가 다 펼쳐지면 WE CALL THEM UNICORN PRODUCTS 가 위(MAKE IT 한글 문구 자리)로 올라와 한 줄로
-  productTitle.classList.toggle('is-top',titleTop);
-  if(titleTop){if(productTitle.style.fontSize){productTitle.dataset.fit=productTitle.style.fontSize;productTitle.style.removeProperty('font-size');}}
-  else if(productTitle.dataset.fit&&!productTitle.style.fontSize)productTitle.style.setProperty('font-size',productTitle.dataset.fit,'important');
-  productTitle.style.opacity=titleTop?String(1-handoff):String(change*(1-titleExit)*(1-spread));
-  productTitle.style.transform=titleTop?'none':`translateY(${-24*titleExit}px)`;
-  detail.style.opacity=change*(1-smooth((p-.66)/.05));
+  productTitle.classList.remove('is-top');
+  productTitle.style.opacity=String(change*(1-handoff));
+  productTitle.style.transform='none';
+  detail.style.opacity=0;
   first.style.opacity=reduce.matches?0:smooth(p/.07)*(1-smooth((p-.10)/.035));
   second.style.opacity=reduce.matches?0:smooth((p-.14)/.04)*(1-smooth((p-.24)/.04));
   if(third){const t=thirdProgress;third.style.opacity=reduce.matches?0:smooth(t/.18)*(1-smooth((t-.82)/.18));
    if(thirdPassed)second.style.opacity=String(+second.style.opacity*(1-smooth(t/.12)));}
   first.style.transform=second.style.transform='none';
   carousel.style.top=`${frame.offsetTop}px`;
-  carousel.style.left=`${-stage.getBoundingClientRect().left}px`; // 3차: 레일을 화면 끝까지 — 펼쳐진 카드가 왼쪽 끝까지 흐른다
-  carousel.style.width=`${innerWidth}px`;
-  carousel.style.setProperty('--unfold-origin',`${frame.getBoundingClientRect().left}px`);
+  const stageLeft=stage.getBoundingClientRect().left;
+  const safeTitleRail=productTitle.getBoundingClientRect().right+24;
+  const railTarget=innerWidth<768?0:Math.max(Math.min(760,Math.max(300,innerWidth*.355)),safeTitleRail);
+  const railStart=railTarget*spread;
+  carousel.style.left=`${railStart-stageLeft}px`;
+  carousel.style.width=`${Math.max(0,innerWidth-railStart)}px`;
+  carousel.style.setProperty('--unfold-origin',`${frame.getBoundingClientRect().left*(1-spread)}px`);
   carousel.style.transform='none';
   carousel.style.setProperty('--project-width',`${frame.offsetWidth}px`);
   carousel.style.setProperty('--project-gap','24px');
-  carousel.style.opacity=1-handoff;
+  carousel.style.opacity=1-handoff; // 카드 레일은 계속 보이고 제목 영역을 비운 오른쪽으로 펼쳐진다
   carousel.style.pointerEvents=spread===1&&handoff<.6?'auto':'none'; // 3차: 카드가 보이는 동안은 호버(뒤집기) 가능
   carousel.dataset.unfolding=String(spread<1);
   carousel.classList.toggle('is-spread',spread===1);
   if(spread<1&&wasSpread)setRailOffset(0);
   wasSpread=spread===1;
-  const firstIntroRaw=plateauPx?clamp((scrolledPx-(startPx+plateauPx*.78))/(innerHeight*.62)):0;
+  const firstIntroRaw=clamp((p-.40)/.14);
   const firstIntro=1-Math.pow(1-firstIntroRaw,3.2);
   cards.forEach((card,i)=>{
-   if(i<4||i>7){card.style.opacity=String(spread);card.style.transform='';card.style.filter='';return;} // 3차: 반복 세트 카드는 펼침에 맞춰 페이드인
+   if(i<4||i>7){card.style.opacity=spread===1?'1':'0';card.style.transform='';card.style.filter='';return;} // 반복 세트는 레일이 오른쪽에 고정된 뒤에만 표시해 왼쪽 제목 영역을 비운다
    // preview: first card rises while the third line fades out (no blank gap), with a long decelerating glide
    const j=i-4,lead=j===0&&plateauPx>0;
-   const arrival=reduce.matches?1:lead?firstIntro:(j===3?smooth((spread-.12)/.7):smooth((p-(.27+j*.125))/.085));
-   const covered=j<2?smooth((p-(.27+(j+1)*.125))/.085):0;
+   const arrival=reduce.matches?1:lead?firstIntro:smooth((p-(.42+j*.08))/.1);
+   const covered=j<2?smooth((p-(.42+(j+1)*.08))/.1):0;
    const rise=lead?Math.min(340,innerHeight*.42):Math.min(180,innerHeight*.22);
    card.style.transform=`translate3d(${ -j*(frame.offsetWidth+24)*(1-spread)}px,${(1-arrival)*rise-covered*12*(1-spread)}px,0) rotate(${[-1.5,1,-1,1.5][j]*(1-spread)*(lead?arrival:1)}deg) scale(${1-(1-arrival)*(lead?.08:.06)-covered*.035*(1-spread)})`;
    card.style.opacity=lead?smooth(firstIntroRaw/.45):smooth(arrival/.25);
    if(lead)card.style.filter=arrival<.999?`blur(${(5*(1-arrival)).toFixed(2)}px)`:'';
    card.style.zIndex=String(j+1);
-   const fadeOut=j>=2?1:1-smooth((p-(.27+(j+1)*.125))/.035);
+   const fadeOut=j>=2?1:1-smooth((p-(.42+(j+1)*.08))/.035);
    detailItems[j].style.opacity=j===3?0:smooth((arrival-.6)/.4)*fadeOut;
    detailItems[j].style.transform=`translateY(${(1-arrival)*12}px)`;
   });
@@ -1029,16 +1046,22 @@ if(visionMask){
   railOffset=cycle?((value%cycle)+cycle)%cycle:0; // 3차: 한 세트 길이로 순환 → 끝없이 이어짐
   track.style.translate=`${-railOffset}px 0`;
  }
- // 3차: 펼쳐진 상태에서 자동으로 흐르고(무한 반복), 드래그/호버 중엔 멈춤
+ // 펼쳐진 상태에서 자동으로 오른쪽으로 흐르며, 드래그/호버 중에는 멈춘다.
  let railHover=false,railLast=0;
  carousel.addEventListener('pointerenter',()=>{railHover=true});carousel.addEventListener('pointerleave',()=>{railHover=false});
+ carousel.addEventListener('wheel',event=>{
+  if(mask.hidden||mask.classList.contains('is-previous-spread')||!wasSpread)return;
+  const distance=Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:(event.shiftKey?event.deltaY:0);
+  if(!distance)return;
+  event.preventDefault();setRailOffset(railOffset-distance);
+ },{passive:false});
  (function flow(now){
   requestAnimationFrame(flow);
   const dt=railLast?Math.min(50,now-railLast):0;railLast=now;
   if(!wasSpread||mask.hidden||mask.classList.contains('is-previous-spread')||document.hidden||drag||railHover||reduce.matches)return;
   const r=carousel.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
   const w=parseFloat(carousel.style.getPropertyValue('--project-width'))||0,g=parseFloat(carousel.style.getPropertyValue('--project-gap'))||0;
-  setRailOffset(railOffset+dt*((w+g)/6000)); // 3차: 뒤 MAKE IT 레일과 같은 속도(카드 한 칸당 6초)
+  setRailOffset(railOffset-dt*((w+g)/6000));
  })(performance.now());
  let drag=null;
  carousel.addEventListener('pointerdown',event=>{if(!mask.hidden&&!mask.classList.contains('is-previous-spread')&&wasSpread&&event.button===0){drag={x:event.clientX,left:railOffset};carousel.setPointerCapture(event.pointerId);}});

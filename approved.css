@@ -288,7 +288,7 @@ body.approved-culture .art-plain{background:#fff!important;color:#111}
 .approved-company .reimagine-flow-left{left:5%!important;right:auto!important;text-align:left!important}
 .approved-company .reimagine-flow-left .flow-categories{white-space:normal!important}
 .approved-company .reimagine-flow-right{left:auto!important;right:5%!important;text-align:right!important}
-.approved-culture .approved-next-wrapper{margin-top:24px}
+.approved-culture .approved-next-wrapper{margin-top:clamp(36px,3vw,48px)}
 
 .approved-recruit .original-journey{--body:"Pretendard Variable",-apple-system,sans-serif}
 .approved-recruit .original-journey .journey-choice{font-family:var(--body)!important}

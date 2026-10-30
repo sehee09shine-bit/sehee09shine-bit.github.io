@@ -785,11 +785,11 @@ html body.approved-company .channel-marquee .channel-mark{background:transparent
 html body.approved-company .channel-marquee .channel-mark img{mix-blend-mode:normal!important}
 /* 채널 로고 img 자체의 회색 플레이스홀더 배경(.approved-page img{background:#f0f0ee}) 제외 */
 html body.approved-page .channel-mark img,html body.approved-page .channel-marquee img{background:transparent!important}
-/* 유니콘 프로덕트 펼침 레일: 3세트 카드를 모두 두고(무한 순환이 끊기지 않게) 가운데 세트 첫 카드가 프레임 위치(--unfold-origin)에서 시작하도록 트랙을 이동. 가로 스크롤바 없음 */
+/* 유니콘 프로덕트 펼침 레일: 3세트를 이어 붙여 무한 순환하고, 펼쳐진 뒤 오른쪽 영역에서만 보이게 한다. */
 html body.approved-company .unicorn-mask-section:not(.is-previous-spread) .unicorn-unfold-carousel .product-project:nth-child(-n+4),
 html body.approved-company .unicorn-mask-section:not(.is-previous-spread) .unicorn-unfold-carousel .product-project:nth-child(n+9){display:block!important}
 html body.approved-company .unicorn-mask-section:not(.is-previous-spread) .unicorn-unfold-carousel .product-carousel-track{transform:translate3d(calc(var(--unfold-origin,0px) - 4 * (var(--project-width,0px) + var(--project-gap,0px))),0,0)!important}
-html body.approved-company .unicorn-mask-section:not(.is-previous-spread) .unicorn-unfold-carousel.is-spread{overflow:hidden!important;scrollbar-width:none!important}
+html body.approved-company .unicorn-mask-section:not(.is-previous-spread) .unicorn-unfold-carousel.is-spread{position:absolute!important;overflow-x:clip!important;overflow-y:visible!important;scrollbar-width:none!important}
 /* 컬처 카드 본문: 첫 카드와 동일하게 14px·자연 줄바꿈 (고정 줄 해제) */
 html body.approved-culture .cx-card__more p.cx-fixed{display:block!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:break-word!important}
 html body.approved-culture .cx-card__more p.cx-fixed .fx-line{display:inline!important;white-space:normal!important;font-size:inherit!important}
@@ -797,22 +797,24 @@ html body.approved-culture .cx-card__more p.cx-fixed .fx-line:not(:last-child)::
 html body.approved-culture .cx-card__more p.cx-fixed .fx-gap{display:block!important;height:.9em!important}
 /* 베네핏 직군 칩: 헤더 바로 아래부터 흰 배경으로 채워 스크롤되는 텍스트가 사이로 비치지 않게 */
 @media(min-width:701px){html body.approved-culture #benefits .art-chips{top:88px!important;padding-top:31px!important}}
-/* 유니콘 프로덕트 펼침 레일: 카드가 항상 최상위(플로우 레이어 위) — 호버 뒤집기 동작 */
+/* 유니콘 프로덕트 펼침 레일: 오른쪽 끝은 페이드 처리, 호버한 카드는 다른 카드 위로 올라와 뒤집힌 면을 가리지 않음 */
 html body.approved-company .unicorn-mask-stage>.unicorn-unfold-carousel.is-spread{z-index:60!important}
+html body.approved-company .unicorn-unfold-carousel.is-spread::after{content:"";position:absolute;z-index:70;top:0;right:0;bottom:0;width:clamp(36px,7vw,112px);background:linear-gradient(90deg,transparent,#000 94%);opacity:1;pointer-events:none;transition:opacity .2s ease}
+html body.approved-company .unicorn-unfold-carousel.is-spread:has(.product-project:hover)::after,html body.approved-company .unicorn-unfold-carousel.is-spread:has(.product-project:focus-within)::after{opacity:0}
+html body.approved-company .unicorn-unfold-carousel.is-spread .product-project:hover,html body.approved-company .unicorn-unfold-carousel.is-spread .product-project:focus-within{z-index:999!important;overflow:visible!important}
 /* 브랜드 카드 배경: 레드 #E60012 (10/30 민주님 요청) */
 html body.approved-company .product-project .brand-project-art{background:#E60012!important}
 html body.approved-company .brand-project-art img{background:transparent!important}
 @media(min-width:701px){html body.approved-culture .cx-card__more p.cx-fixed{font-size:17px!important;line-height:1.7!important;letter-spacing:-.01em!important}}
 @media(max-width:700px){html body.approved-culture .cx-card__more p.cx-fixed{font-size:var(--m-body)!important;line-height:1.65!important}}
-/* 유니콘 프로덕트: 카드가 다 펼쳐지면 타이틀이 MAKE IT 한글 문구와 같은 자리·같은 크기로 위에 한 줄 */
-html body.approved-company .unicorn-stack-title.is-top{--ko-size:clamp(26px,3.2vw,48px);position:absolute!important;top:5%!important;left:calc(-1 * var(--layout-gutter) + 5vw)!important;width:90vw!important;max-width:none!important;margin:0!important;text-align:center!important;font-size:var(--ko-size)!important;font-weight:600!important;line-height:1.35!important;letter-spacing:-.045em!important;align-self:auto!important;justify-self:auto!important;z-index:9!important;transition:opacity .4s ease!important;white-space:nowrap}
-html body.approved-company .unicorn-stack-title.is-top span{display:inline!important;margin:0!important}
-html body.approved-company .unicorn-stack-title.is-top span+span{margin-left:.32em!important}
-html body.approved-company .unicorn-stack-title.is-top br{display:none!important}
-@media(max-width:767px){html body.approved-company .unicorn-stack-title.is-top{left:calc(-24px + 5vw)!important}}
-@media(max-width:700px){html body.approved-company .unicorn-stack-title.is-top{font-size:min(20px,4.6vw)!important;white-space:nowrap!important;letter-spacing:-.03em!important}} /* 모바일: 한 줄로 맞춰 카드에 가려지지 않게 */
-html body.approved-company .unicorn-mask-stage .unicorn-stack-title.is-top>span,html body.approved-company .unicorn-mask-stage .unicorn-stack-title.is-top>span:first-child{display:inline!important;font-size:inherit!important;font-weight:inherit!important;letter-spacing:inherit!important;text-transform:none!important;line-height:inherit!important;margin:0!important}
-html body.approved-company .unicorn-mask-stage .unicorn-stack-title.is-top>span+span{margin-left:.32em!important}
+/* 유니콘 프로덕트: 펼쳐진 뒤에도 두 번째 캡처의 두 줄 타이틀을 왼쪽에 고정 */
+html body.approved-company .unicorn-stack-title.is-top{position:absolute!important;top:50%!important;left:clamp(24px,5vw,100px)!important;transform:translateY(-50%)!important;width:clamp(300px,31vw,640px)!important;max-width:32vw!important;margin:0!important;text-align:center!important;font-size:clamp(36px,4.2vw,86px)!important;font-weight:800!important;line-height:.9!important;letter-spacing:-.055em!important;align-self:auto!important;justify-self:auto!important;z-index:80!important;transition:opacity .4s ease,top .4s ease,left .4s ease,width .4s ease,transform .4s ease!important;white-space:normal!important}
+html body.approved-company .unicorn-stack-title.is-top>span:first-child{display:block!important;margin:0 0 .16em!important;font-size:clamp(11px,1.1vw,18px)!important;font-weight:500!important;line-height:1.2!important;letter-spacing:.06em!important;text-align:right!important;text-transform:uppercase!important}
+html body.approved-company .unicorn-stack-title.is-top>span+span{display:block!important;margin:0!important;text-align:center!important;line-height:.9!important;white-space:normal!important}
+html body.approved-company .unicorn-stack-title.is-top br{display:block!important}
+@media(max-width:767px){html body.approved-company .unicorn-stack-title.is-top{top:4%!important;left:0!important;transform:none!important;width:100%!important;max-width:100%!important;font-size:clamp(30px,7vw,54px)!important;text-align:center!important}html body.approved-company .unicorn-stack-title.is-top>span:first-child{text-align:center!important}html body.approved-company .unicorn-stack-title.is-top>span+span{text-align:center!important}}
+/* 채용 Join us 사진은 장식 이미지로 유지하고 클릭 입력은 받지 않음 */
+html body.approved-culture #culture-end .art-next__visual{pointer-events:none!important;cursor:default!important}
 /* 성장 섹션 머리말 "TURNS OUT, …" 가운데 정렬 (박스 폭이 글보다 좁아 오른쪽으로 삐져나오던 것 수정) */
 html body.approved-company .growth-tags-heading>p{width:max-content!important;max-width:100%!important;margin-inline:auto!important;text-align:center!important}
 /* 매장 사진(Olive Young's Pick / Offline Store): 한글 설명은 평소 숨김, 마우스를 올리거나 누르면 표시 (터치 기기 포함) */
@@ -851,6 +853,25 @@ html body.approved-culture #team .acc__body p.fx-fixed .fx-gap{display:block!imp
  html body .approved-header .approved-menu-toggle:hover{background:#e6e6e6!important}
  html body .approved-header .approved-menu-toggle:focus:not(:focus-visible){outline:none}
  html body .approved-header.is-menu-open .approved-menu-toggle__close{display:flex!important;align-items:center;justify-content:center;width:100%;height:100%;font-size:20px;line-height:1;transform:translateY(-1px)}
+}
+/* 모바일 Culture: 본문은 한 흐름으로 읽히게 두고, 카드 설명은 스크롤에 들어올 때 펼친다. */
+@media(max-width:700px){
+ html body.approved-culture .cx-scroll{position:relative!important;height:auto!important;min-height:0!important;margin:0!important;overflow:visible!important;padding-block:var(--section-gap)!important}
+ html body.approved-culture .cx-stage{position:relative!important;top:auto!important;height:auto!important;min-height:0!important;overflow:visible!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+ html body.approved-culture .cx-actor,html body.approved-culture .cx-lay--a,html body.approved-culture .cx-hint{display:none!important}
+ html body.approved-culture .cx-lay--b{position:relative!important;inset:auto!important;width:100%!important;height:auto!important;min-height:0!important;padding:0!important;align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;opacity:1!important;visibility:visible!important;transform:none!important;order:0}
+ html body.approved-culture .cx-lay--b .cx-fade-b{opacity:1!important;transform:none!important}
+ html body.approved-culture .cx-lay [data-slot]{visibility:visible!important}
+ html body.approved-culture .cx-cards{position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:100%!important;height:auto!important;transform:none!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:start!important;gap:12px!important;order:1}
+ html body.approved-culture .cx-card{position:relative!important;width:100%!important;min-width:0!important;transform:none!important;opacity:1!important}
+ html body.approved-culture .cx-card__more{display:grid!important;grid-template-rows:0fr!important;height:auto!important;opacity:1!important;overflow:hidden!important;transition:grid-template-rows .65s cubic-bezier(.22,1,.36,1)!important}
+ html body.approved-culture .cx-card__more>div{min-height:0!important;margin-top:0!important;padding:0!important;overflow:hidden!important;opacity:0!important;transform:translateY(-10px) scaleY(.98)!important;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .3s ease,margin .5s ease,padding .5s ease!important}
+ html body.approved-culture .cx-card.is-mobile-expanded .cx-card__more{grid-template-rows:1fr!important}
+ html body.approved-culture .cx-card.is-mobile-expanded .cx-card__more>div{margin-top:12px!important;padding:20px!important;opacity:1!important;transform:none!important}
+}
+/* Recruit mobile: anchor the crop at the photo's top so the person's face stays in frame. */
+@media(max-width:700px){
+ html body.approved-recruit .art-hero__photo img{object-position:50% 0%!important}
 }
 /* 입사 축하금 띠: 누르면 설명이 띠 안에서 아래에서 위로 떠오르듯 나타남 (다른 요소는 그대로) */
 html body.approved-recruit #bonus .art-bonus__body>div{transform:translateY(14px);opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .35s ease}

@@ -81,3 +81,21 @@
   .retail-collection__photos img, .retail-collection__photos figcaption, .retail-carousel__btn { transition: none; }
 }
 .retail-collection__photos figure { aspect-ratio: 1080/1450; }
+
+/* Captions stay off the photos until hover, keyboard focus, or tap. */
+.retail-collection__photos figure{cursor:pointer}
+.retail-collection__photos figure:focus-visible{outline:2px solid #e60012;outline-offset:3px}
+.retail-collection__photos figure:is(:hover,:focus-visible,.is-caption-open) figcaption{opacity:1;transform:none}
+@media(hover:none){.retail-collection__photos figcaption{opacity:0;transform:translateY(8px)}.retail-collection__photos figure.is-caption-open figcaption{opacity:1;transform:none}}
+
+/* Captions stay off the photos until hover, keyboard focus, or tap. */
+.retail-collection__photos figure{cursor:pointer}
+.retail-collection__photos figure:focus-visible{outline:2px solid #e60012;outline-offset:3px}
+.retail-collection__photos figure:is(:hover,:focus-visible,.is-caption-open) figcaption{opacity:1;transform:none}
+@media(hover:none){.retail-collection__photos figcaption{opacity:0;transform:translateY(8px)}.retail-collection__photos figure.is-caption-open figcaption{opacity:1;transform:none}}
+
+/* Captions stay off the photos until hover, keyboard focus, or tap. */
+.retail-collection__photos figure{cursor:pointer}
+.retail-collection__photos figure:focus-visible{outline:2px solid #e60012;outline-offset:3px}
+.retail-collection__photos figure:is(:hover,:focus-visible,.is-caption-open) figcaption{opacity:1;transform:none}
+@media(hover:none){.retail-collection__photos figcaption{opacity:0;transform:translateY(8px)}.retail-collection__photos figure.is-caption-open figcaption{opacity:1;transform:none}}
