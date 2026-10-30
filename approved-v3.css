@@ -883,3 +883,5 @@ html body.approved-recruit #bonus .art-bonus__head{scroll-margin-top:120px}
  html body.approved-recruit .process-track{min-height:0!important;padding-bottom:4px!important}
  html body.approved-recruit .process-note{margin-top:28px!important}
 }
+/* SEO·접근성: 모바일 최소 글자 12px (BORN IN KOREA… 라벨이 11px로 떨어지던 것) */
+html body.approved-company main .global-cities-intro.editorial-heading>p.editorial-label,html body.approved-company main .growth-tags-heading>p{font-size:clamp(12px,.85vw,13px)!important}
