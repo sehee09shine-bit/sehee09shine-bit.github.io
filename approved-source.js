@@ -971,7 +971,7 @@ if(visionMask){
   mask.classList.toggle('is-third-phase',darkScene&&thirdPassed&&p<.3); // preview: keep the film visible behind the third line
   const manifesto=document.querySelector('.reimagine-flow')?.getBoundingClientRect();
   document.body.classList.toggle('unicorn-dark-active',(darkScene&&rect.bottom>top+80)||!!(manifesto&&manifesto.top<=top+80&&manifesto.bottom>top+80));
-  const entrance=reduce.matches?1:smooth((stableVH()*.7-rect.top)/(stableVH()*.5));
+  const entrance=reduce.matches?1:innerWidth<768?smooth((top-rect.top)/(stableVH()*.3)):smooth((stableVH()*.7-rect.top)/(stableVH()*.5)); // 모바일: 영상이 카드로 다 줄어든 뒤(섹션이 헤더 아래 고정된 순간부터) 제목·영어 문장이 나타나게 — 커다란 영상 위에 글씨가 겹치는 순간 제거
   title.querySelectorAll('.unicorn-title-line>span').forEach((line,i)=>{
    const reveal=reduce.matches?1:smooth((entrance-i*.22)/(1-i*.22));
    line.style.transform=`translateY(${105*(1-reveal)}%)`;
