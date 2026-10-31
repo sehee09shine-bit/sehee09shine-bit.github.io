@@ -956,3 +956,5 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
 }
 /* 컬처 상단 사진: 원본에서 같은 구도를 고화질로 다시 잘라 사용, 머리 위 공간이 조금 더 보이도록 위쪽 기준으로 맞춤 */
 html body.approved-culture .art-hero__photo img{object-fit:cover!important;object-position:50% 22%!important}
+/* 리크루트 모바일: 상단 소개 문구 스타일을 컬처와 동일하게(16px, #3F434A, 400) */
+@media(max-width:700px){html body.approved-recruit .art-hero__intro{font-size:16px!important;line-height:1.65!important;color:#3f434a!important;font-weight:400!important;letter-spacing:-.03em!important}}
