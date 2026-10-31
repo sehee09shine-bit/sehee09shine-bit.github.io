@@ -945,3 +945,12 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-culture .art-hero__inner{padding-top:108px!important;gap:20px!important}
  html body.approved-culture .art-hero__photo{aspect-ratio:auto!important;height:calc(min((100vw - 32px) * 1.045, 560px) + 48px)!important}
 }
+/* 컬처·리크루트 모바일: 상단 소개 문구 왼쪽 정렬(사진 폭에 맞춤) */
+@media(max-width:700px){
+ html body.approved-culture .art-hero__intro,html body.approved-recruit .art-hero__intro{text-align:left!important;width:100%!important;max-width:none!important;margin-inline:0!important;align-self:stretch!important;justify-self:stretch!important}
+}
+/* 컬처 모바일: 화면이 낮은 폰에서도 소개 문구가 첫 화면에 다 보이도록 사진 높이를 화면 높이에 맞춤(넉넉한 폰은 키운 크기 유지) */
+@media(max-width:700px){
+ html body.approved-culture .art-hero__photo{height:max(220px,min(calc(min((100vw - 32px) * 1.045, 560px) + 48px),calc(100vh - 415px)))!important}
+ @supports(height:100svh){html body.approved-culture .art-hero__photo{height:max(220px,min(calc(min((100vw - 32px) * 1.045, 560px) + 48px),calc(100svh - 415px)))!important}}
+}
