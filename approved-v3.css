@@ -928,3 +928,8 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-recruit .art-bonus-slot{display:block}
 }
 @media(max-width:700px){html body.approved-recruit #bonus.art-bonus.is-open{border-radius:0!important}html body.approved-recruit #bonus.is-open .art-bonus__head{border-radius:0!important}}
+/* 리크루트 모바일: 헤더-타이틀 간격 축소(서브 텍스트가 첫 화면에 보이도록), 입사 축하금 본문 글자 약간 축소 */
+@media(max-width:700px){
+ html body.approved-recruit .art-hero__inner{padding-top:108px!important;gap:20px!important}
+ html body.approved-recruit #bonus .art-bonus__body p{font-size:14.5px!important;line-height:1.7!important}
+}
