@@ -933,3 +933,8 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-recruit .art-hero__inner{padding-top:108px!important;gap:20px!important}
  html body.approved-recruit #bonus .art-bonus__body p{font-size:14.5px!important;line-height:1.7!important}
 }
+/* 리크루트 모바일: 화면 높이가 낮은 폰에서도 서브 텍스트가 축하금 띠 위로 보이도록 사진 높이를 화면 높이에 맞춤 */
+@media(max-width:700px){
+ html body.approved-recruit .art-hero__photo{height:max(240px,min(calc((100vw - 32px) * 1.045),560px,calc(100vh - 360px)))!important}
+ @supports(height:100svh){html body.approved-recruit .art-hero__photo{height:max(240px,min(calc((100vw - 32px) * 1.045),560px,calc(100svh - 360px)))!important}}
+}
