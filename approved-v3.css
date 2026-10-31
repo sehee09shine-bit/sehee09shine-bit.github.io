@@ -954,3 +954,5 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-culture .art-hero__photo{height:max(220px,min(calc(min((100vw - 32px) * 1.045, 560px) + 48px),calc(100vh - 415px)))!important}
  @supports(height:100svh){html body.approved-culture .art-hero__photo{height:max(220px,min(calc(min((100vw - 32px) * 1.045, 560px) + 48px),calc(100svh - 415px)))!important}}
 }
+/* 컬처 상단 사진: 원본에서 같은 구도를 고화질로 다시 잘라 사용, 머리 위 공간이 조금 더 보이도록 위쪽 기준으로 맞춤 */
+html body.approved-culture .art-hero__photo img{object-fit:cover!important;object-position:50% 22%!important}
