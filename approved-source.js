@@ -920,10 +920,16 @@ if(visionMask){
   if(mask.hidden)return;
   const portrait=innerWidth<768?innerHeight*.52:Math.min((stage.clientWidth-64)*1.15/3.15,innerHeight*.48)*1.5;
   const product=Math.max(306,Math.min(535.5,Math.max(innerWidth*.26775,innerHeight*.36975)));
-  stage.style.setProperty('--unicorn-card-height',`${(portrait+product)/2}px`);
+  let cardH=(portrait+product)/2;
+  if(innerWidth<768){ // 3차: 화면이 낮은 휴대폰에서도 헤더와 'WE CALL THEM' 사이 여백(최소 32px)이 남도록 카드 높이를 줄임(비율 유지)
+   const gap=parseFloat(getComputedStyle(stage).rowGap)||14,pad=32;
+   const avail=stage.clientHeight-productTitle.offsetHeight-detail.offsetHeight-gap*2-pad*2;
+   if(avail>0)cardH=Math.max(200,Math.min(cardH,avail));
+  }
+  stage.style.setProperty('--unicorn-card-height',`${cardH}px`);
   stage.style.setProperty('--unicorn-card-width',`${mask.querySelector('.unicorn-mask-frame').offsetWidth}px`);
  }
- sizeCards();addEventListener('resize',sizeCards);
+ sizeCards();addEventListener('resize',sizeCards);document.fonts.ready.then(sizeCards);
  let wasSpread=false, easedProgress=null, lastPaint=0, thirdProgress=0, thirdPassed=false, topTitleMode=false;
  const third=mask.querySelector('.unicorn-mask-third');
  function paint(now=performance.now()){
