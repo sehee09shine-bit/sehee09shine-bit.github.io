@@ -889,3 +889,17 @@ html body.approved-company main .global-cities-intro.editorial-heading>p.editori
 html body.approved-recruit #bonus.art-bonus{border-radius:10px 10px 0 0!important;overflow:hidden!important}
 html body.approved-recruit #bonus .art-bonus__head{border-radius:10px 10px 0 0!important;outline:none!important;box-shadow:none!important}
 html body.approved-recruit #bonus .art-bonus__head:focus-visible{box-shadow:inset 0 0 0 2px rgba(255,255,255,.85)!important}
+/* 메인 모델샷 옆 제품명: 단어 중간에서 끊기지 않게(줄은 <br> 기준만), 좁은 화면에선 글자 크기를 칸에 맞춰 줄임 */
+html body.approved-company .unicorn-stack-detail h3{white-space:nowrap!important;overflow-wrap:normal!important;word-break:keep-all!important;font-size:min(36px,2.5vw)!important}
+@media(max-width:700px){html body.approved-company .unicorn-stack-detail h3{font-size:min(28px,7vw)!important}}
+/* 메인 모델샷 카드 뒷면 제품명 확대 (웹·모바일), 단어 중간 끊김 없이 */
+html body.approved-company .product-face-back h3{font-size:clamp(22px,2.3vw,36px)!important;line-height:1.02!important;white-space:nowrap!important;overflow-wrap:normal!important;word-break:keep-all!important}
+@media(max-width:700px){html body.approved-company .product-face-back h3{font-size:clamp(24px,7vw,30px)!important}}
+/* 컬처 Who we look for 타이틀: Benefits·Our Team 과 같은 크기·굵기·자간 */
+@media(min-width:701px){html body.approved-culture #talent .talent-profile__heading h2{font-size:var(--type-section)!important;font-weight:600!important;letter-spacing:-.045em!important;line-height:1.15!important}}
+html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!important}
+/* 리크루트 모바일 상단 모델샷: 잘리지 않게 사진 원래 비율(1122×1402) 그대로 */
+@media(max-width:700px){
+ html body.approved-recruit .art-hero__photo{height:auto!important;aspect-ratio:1122/1402!important;max-height:none!important}
+ html body.approved-recruit .art-hero__photo img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 50%!important}
+}
