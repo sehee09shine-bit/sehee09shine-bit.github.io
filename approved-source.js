@@ -929,8 +929,9 @@ if(visionMask){
   const portrait=innerWidth<768?stableVH()*.52:Math.min((stage.clientWidth-64)*1.15/3.15,stableVH()*.48)*1.5;
   const product=Math.max(306,Math.min(535.5,Math.max(innerWidth*.26775,stableVH()*.36975)));
   let cardH=(portrait+product)/2;
-  if(innerWidth<768){ // 3차: 화면이 낮은 휴대폰에서도 헤더와 'WE CALL THEM' 사이 여백(최소 56px)이 남도록 카드 높이를 줄임(비율 유지)
-   const gap=parseFloat(getComputedStyle(stage).rowGap)||14,pad=56;
+  if(innerWidth<768)cardH=innerWidth*.63*812/637; // 모바일: 영상 카드·제품 카드 공통 크기 — 카드 폭을 화면 폭의 63%로(여백이 넓다는 피드백, 글자 크기는 그대로)
+  if(innerWidth<768){ // 3차: 화면이 낮은 휴대폰에서도 헤더와 'WE CALL THEM' 사이 여백(최소 32px)이 남도록 카드 높이를 줄임(비율 유지)
+   const gap=parseFloat(getComputedStyle(stage).rowGap)||14,pad=32;
    const avail=stage.clientHeight-productTitle.offsetHeight-detail.offsetHeight-gap*2-pad*2;
    if(avail>0)cardH=Math.max(180,Math.min(cardH,avail));
   }
