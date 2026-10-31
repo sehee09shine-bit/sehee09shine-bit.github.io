@@ -917,3 +917,14 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-recruit .art-hero__photo{aspect-ratio:auto!important;height:min(calc((100vw - 32px) * 1.045),560px)!important}
  html body.approved-recruit .art-hero__photo img{object-position:50% 30%!important}
 }
+/* 리크루트(모바일) 입사 축하금 띠: 화면 하단 고정(자리에 닿으면 안착) + 펼치면 레이아웃을 밀지 않고 위로 올라오는 패널 */
+@media(max-width:700px){
+ html body.approved-recruit #bonus.art-bonus{overflow:visible!important;position:relative;z-index:60}
+ html body.approved-recruit #bonus.art-bonus.is-floating{position:fixed!important;left:0!important;right:0!important;bottom:0!important;width:auto!important;margin:0!important;z-index:900!important}
+ html body.approved-recruit #bonus .art-bonus__body{position:absolute!important;left:0;right:0;bottom:100%;background:#e52925;color:#fff;border-radius:10px 10px 0 0;box-shadow:0 -10px 24px rgba(0,0,0,.12)}
+ html body.approved-recruit #bonus .art-bonus__body p{padding:22px 20px 18px!important}
+ html body.approved-recruit #bonus.is-open .art-bonus__head{border-radius:0!important}
+ html body.approved-recruit #bonus.is-open .art-bonus__arrow{transform:rotate(180deg)}
+ html body.approved-recruit .art-bonus-slot{display:block}
+}
+@media(max-width:700px){html body.approved-recruit #bonus.art-bonus.is-open{border-radius:0!important}html body.approved-recruit #bonus.is-open .art-bonus__head{border-radius:0!important}}

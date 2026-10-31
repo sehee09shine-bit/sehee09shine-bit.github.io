@@ -90,3 +90,26 @@ document.querySelectorAll('a.ext[href="#"]').forEach(a=>{a.setAttribute('aria-di
  };
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+
+// 리크루트(모바일) 입사 축하금 띠: 원래 자리가 화면 아래에 있으면 화면 하단에 붙어 보이고, 스크롤해서 자리에 닿으면 그 자리에 안착
+(()=>{
+ const band=document.querySelector('body.approved-recruit #bonus');
+ if(!band)return;
+ const mq=matchMedia('(max-width:700px)');
+ const slot=document.createElement('div');slot.className='art-bonus-slot';slot.setAttribute('aria-hidden','true');band.before(slot);
+ const head=band.querySelector('.art-bonus__head');
+ let ticking=false;
+ const update=()=>{
+  ticking=false;
+  if(!mq.matches){band.classList.remove('is-floating');slot.style.height='';return;}
+  const h=head.offsetHeight;
+  const floating=band.classList.contains('is-floating');
+  const top=(floating?slot:band).getBoundingClientRect().top;
+  const next=top+h>innerHeight;
+  if(next!==floating)band.classList.toggle('is-floating',next);
+  slot.style.height=next?h+'px':'';
+ };
+ const req=()=>{if(!ticking){ticking=true;requestAnimationFrame(update);}};
+ addEventListener('scroll',req,{passive:true});addEventListener('resize',req);mq.addEventListener?.('change',req);
+ document.fonts?.ready.then(req);update();
+})();
