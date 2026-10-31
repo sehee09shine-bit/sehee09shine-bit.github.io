@@ -527,14 +527,14 @@ const stableVH=()=>vhCache;
     }
     const p=raw*raw*(3-2*raw);
     const width=innerWidth+(box.width-innerWidth)*p;
-    const height=stableVH()+(box.height-stableVH())*p;
+    const height=innerHeight+(box.height-innerHeight)*p; // 영상 레이어는 실제 화면 높이(innerHeight)로 깔리므로 잘라내는 영역도 같은 높이로 계산(고정 높이를 쓰면 아이폰에서 주소창이 숨을 때 카드가 그만큼 길어짐)
     // Keep the video viewport stable: animate its crop, never resize the iframe per frame.
     const targetTop=stage&&distance<end?stickyTop+target.offsetTop:box.top;
     const left=(box.left-root.left)*p,top=targetTop*p;
     const radius=(stage?10:24)*p; // 10/19: match the 10px card corners in the unicorn stage.
-    Object.assign(media.style,{left:'0px',top:`${distance}px`,width:`${innerWidth}px`,height:`${innerHeight}px`,borderRadius:'0px',clipPath:`inset(${top}px ${innerWidth-left-width}px ${stableVH()-top-height}px ${left}px round ${radius}px)`});
-    media.style.setProperty('--film-width',`${Math.max(innerWidth,(stableVH()+120)*16/9)}px`);
-    media.style.setProperty('--film-height',`${Math.max(stableVH()+120,innerWidth*9/16)}px`);
+    Object.assign(media.style,{left:'0px',top:`${distance}px`,width:`${innerWidth}px`,height:`${innerHeight}px`,borderRadius:'0px',clipPath:`inset(${top}px ${innerWidth-left-width}px ${innerHeight-top-height}px ${left}px round ${radius}px)`});
+    media.style.setProperty('--film-width',`${Math.max(innerWidth,(innerHeight+120)*16/9)}px`);
+    media.style.setProperty('--film-height',`${Math.max(innerHeight+120,innerWidth*9/16)}px`);
     media.style.setProperty('--film-shade',String(.13+.32*p));
     hero.style.setProperty('--opening-copy-opacity',String(1-Math.min(1,raw*3)));
   };
