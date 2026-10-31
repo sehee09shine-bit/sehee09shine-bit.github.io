@@ -921,10 +921,10 @@ if(visionMask){
   const portrait=innerWidth<768?innerHeight*.52:Math.min((stage.clientWidth-64)*1.15/3.15,innerHeight*.48)*1.5;
   const product=Math.max(306,Math.min(535.5,Math.max(innerWidth*.26775,innerHeight*.36975)));
   let cardH=(portrait+product)/2;
-  if(innerWidth<768){ // 3차: 화면이 낮은 휴대폰에서도 헤더와 'WE CALL THEM' 사이 여백(최소 32px)이 남도록 카드 높이를 줄임(비율 유지)
-   const gap=parseFloat(getComputedStyle(stage).rowGap)||14,pad=32;
+  if(innerWidth<768){ // 3차: 화면이 낮은 휴대폰에서도 헤더와 'WE CALL THEM' 사이 여백(최소 56px)이 남도록 카드 높이를 줄임(비율 유지)
+   const gap=parseFloat(getComputedStyle(stage).rowGap)||14,pad=56;
    const avail=stage.clientHeight-productTitle.offsetHeight-detail.offsetHeight-gap*2-pad*2;
-   if(avail>0)cardH=Math.max(200,Math.min(cardH,avail));
+   if(avail>0)cardH=Math.max(180,Math.min(cardH,avail));
   }
   stage.style.setProperty('--unicorn-card-height',`${cardH}px`);
   stage.style.setProperty('--unicorn-card-width',`${mask.querySelector('.unicorn-mask-frame').offsetWidth}px`);
