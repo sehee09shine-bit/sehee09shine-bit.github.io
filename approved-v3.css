@@ -908,3 +908,7 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-recruit .art-hero__photo{aspect-ratio:auto!important;height:clamp(170px,min(calc(100svh - 480px),calc((100vw - 32px) * 1.2496)),560px)!important}
  html body.approved-recruit .art-hero__photo img{object-position:50% 12%!important}
 }
+/* 입사 축하금 띠(모바일): 한 줄로 — 화면 폭에 맞춰 글자 크기 자동(최대 16px) */
+@media(max-width:700px){
+ html body.approved-recruit #bonus .art-bonus__head span{white-space:nowrap!important;font-size:min(16px,calc((100vw - 70px) / 20.2))!important}
+}
