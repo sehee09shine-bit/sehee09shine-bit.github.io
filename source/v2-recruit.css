@@ -92,7 +92,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .logo {
   display: block; width: 104px; aspect-ratio: 577 / 215; flex: none;
   background: var(--red);
-  -webkit-mask: url("https://yourunicorn-careers.sehee09shine.workers.dev/assets/logo.png") center / contain no-repeat; mask: url("https://yourunicorn-careers.sehee09shine.workers.dev/assets/logo.png") center / contain no-repeat;
+  -webkit-mask: url("/assets/careers-logo.png") center / contain no-repeat; mask: url("/assets/careers-logo.png") center / contain no-repeat;
   font-size: 0; color: transparent;
 }
 .gnb.on-dark:not(.is-solid) .logo, .footer .logo, .section--red .logo, .section--black .logo { background: var(--white); }
