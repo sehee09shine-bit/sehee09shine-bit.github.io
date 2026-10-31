@@ -940,3 +940,8 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
 }
 /* 모바일 NO.1 카드: 화살표만 따로 옮기던 보정(-3%, 96%) 제거 → 빨간 판·회색 기둥과 이음새가 PC처럼 정확히 맞도록 */
 @media(max-width:600px){html body.feedback-v2 .growth-ill-rank .growth-art-layer.ill-arrow img[src*="rank-3a9fc"]{transform:none!important}}
+/* 컬처 모바일: 상단 여백·간격을 리크루트와 통일(헤더 아래 20px, 간격 20px), 줄어든 48px 만큼 사진을 키움 */
+@media(max-width:700px){
+ html body.approved-culture .art-hero__inner{padding-top:108px!important;gap:20px!important}
+ html body.approved-culture .art-hero__photo{aspect-ratio:auto!important;height:calc(min((100vw - 32px) * 1.045, 560px) + 48px)!important}
+}
