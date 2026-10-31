@@ -946,7 +946,7 @@ if(visionMask){
   const rect=mask.getBoundingClientRect(),top=parseFloat(getComputedStyle(stage).top)||0;
   // preview: hold the scroll at p=.27 for ~1.1 screens to show the third line, then continue as before
   const scrolledPx=top-rect.top,totalPx=Math.max(1,mask.offsetHeight-stage.offsetHeight);
-  const plateauPx=mask.classList.contains('has-linked-flow')&&!mask.classList.contains('is-previous-spread')?stableVH()*1.1:0;
+  const plateauPx=mask.classList.contains('has-linked-flow')&&!mask.classList.contains('is-previous-spread')?stableVH()*(innerWidth<768?.7:1.1):0; // 모바일은 'WHAT IS A UNICORN' 멈춤 구간을 약 2/3로(너무 오래 머문다는 피드백)
   const baseTotal=Math.max(1,totalPx-plateauPx),r0=(mask.classList.contains('has-linked-flow')?.58:1)*.27,startPx=r0*baseTotal;
   thirdProgress=plateauPx?clamp((scrolledPx-startPx)/plateauPx):0; thirdPassed=plateauPx&&scrolledPx>startPx;
   const target=clamp(scrolledPx<startPx?scrolledPx/baseTotal:scrolledPx<startPx+plateauPx?r0:(scrolledPx-plateauPx)/baseTotal);

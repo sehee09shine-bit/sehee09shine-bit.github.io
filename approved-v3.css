@@ -958,3 +958,35 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
 html body.approved-culture .art-hero__photo img{object-fit:cover!important;object-position:50% 22%!important}
 /* 리크루트 모바일: 상단 소개 문구 스타일을 컬처와 동일하게(16px, #3F434A, 400) */
 @media(max-width:700px){html body.approved-recruit .art-hero__intro{font-size:16px!important;line-height:1.65!important;color:#3f434a!important;font-weight:400!important;letter-spacing:-.03em!important}}
+/* 뒤집힌 제품 카드 이름: 카드 폭보다 길면 잘리고 가운데 정렬이 깨지므로, 카드 폭에 맞춰 글자 크기를 제한(가장 긴 단어 CRUNCHBALL 기준) */
+html body.approved-company .product-face-back h3{font-size:min(clamp(22px,2.3vw,36px),calc((var(--project-width,400px) - 30px) / 6.9))!important}
+@media(max-width:700px){html body.approved-company .product-face-back h3{font-size:min(clamp(24px,7vw,30px),calc((var(--project-width,186px) - 30px) / 6.9))!important}}
+/* 메인 모바일: 'WHAT IS A UNICORN'~제품 카드 구간이 너무 오래 머물러서 스크롤 길이를 약 22% 줄임(1050svh → 820svh, 연출 순서·비율은 그대로) */
+@media(max-width:767px){html body.approved-company .unicorn-mask-section.has-linked-flow{height:820svh!important}}
+/* ===== 모바일 헤더 슬림화(토스 채용 참고): 88px → 56px, 로고·메뉴 버튼 축소, 헤더 기준 위치값 -32px ===== */
+@media(max-width:700px){
+ html body .approved-header{min-height:56px!important;height:56px!important;padding-top:0!important;padding-bottom:0!important}
+ html body .approved-header .approved-logo svg{height:24px!important;width:auto!important}
+ html body .approved-header .approved-menu-toggle{width:36px!important;height:36px!important;border-radius:8px!important}
+ html body .approved-header .approved-menu-toggle__bars{width:18px!important;gap:4px!important}
+ html body .approved-header .approved-menu-toggle__bars i{height:2px!important;border-radius:1px!important;flex:none!important} /* 선 두께는 정수 px 로(소수점이면 선마다 굵기가 달라 보임) */
+ html body .approved-header.is-menu-open .approved-menu-toggle__close{font-size:17px!important}
+ html body .approved-header.is-menu-open nav{padding-top:84px!important}
+ html body .approved-header.is-menu-open nav::before{top:80px!important}
+ /* 메인 */
+ html:root{scroll-padding-top:46px}
+ html body.approved-company .unicorn-mask-stage{top:56px!important;height:calc(100svh - 56px)!important}
+ html body.approved-company .global-cities-section{--global-pin-top:44px}
+ /* 컬처·채용 */
+ html body.approved-culture .art-hero__inner,html body.approved-recruit .art-hero__inner{padding-top:76px!important}
+ html body.approved-recruit .art-hero__photo{height:max(240px,min(calc((100vw - 32px) * 1.045),560px,calc(100vh - 328px)))!important}
+ html body.approved-culture .art-hero__photo{height:max(220px,min(calc(min((100vw - 32px) * 1.045, 560px) + 48px),calc(100vh - 383px)))!important}
+ html body.approved-culture #talent{top:64px!important}
+ html body.approved-culture #benefits .art-chips{top:56px!important}
+ html body:is(.approved-culture,.approved-recruit) .art-side__top{top:87px!important}
+}
+@media(max-width:700px){@supports(height:100svh){
+ html body.approved-recruit .art-hero__photo{height:max(240px,min(calc((100vw - 32px) * 1.045),560px,calc(100svh - 328px)))!important}
+ html body.approved-culture .art-hero__photo{height:max(220px,min(calc(min((100vw - 32px) * 1.045, 560px) + 48px),calc(100svh - 383px)))!important}
+}}
+@media(max-width:700px){html body .approved-header .approved-menu-toggle,html body .approved-header .approved-menu-toggle:hover,html body .approved-header .approved-menu-toggle:focus,html body .approved-header .approved-menu-toggle:active,html body .approved-header.is-menu-open .approved-menu-toggle{width:36px!important;height:36px!important;border-radius:8px!important;top:10px!important;transform:none!important}} /* 세로 위치를 정수 px 로 고정(50% 기준이면 테두리 1px 때문에 반 픽셀에 걸려 아이콘이 흐려짐) */
