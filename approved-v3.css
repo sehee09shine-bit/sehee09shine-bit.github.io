@@ -938,3 +938,5 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
  html body.approved-recruit .art-hero__photo{height:max(240px,min(calc((100vw - 32px) * 1.045),560px,calc(100vh - 360px)))!important}
  @supports(height:100svh){html body.approved-recruit .art-hero__photo{height:max(240px,min(calc((100vw - 32px) * 1.045),560px,calc(100svh - 360px)))!important}}
 }
+/* 모바일 NO.1 카드: 화살표만 따로 옮기던 보정(-3%, 96%) 제거 → 빨간 판·회색 기둥과 이음새가 PC처럼 정확히 맞도록 */
+@media(max-width:600px){html body.feedback-v2 .growth-ill-rank .growth-art-layer.ill-arrow img[src*="rank-3a9fc"]{transform:none!important}}
