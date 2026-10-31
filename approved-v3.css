@@ -905,6 +905,6 @@ html body.approved-culture #talent .talent-profile__heading h2{font-weight:600!i
 }
 /* 리크루트 모바일 모델샷: 첫 화면에 빨간 띠가 보이도록 화면 높이에 맞춤(사진 원래 높이 이하, 신발 쪽만 살짝 잘림) */
 @media(max-width:700px){
- html body.approved-recruit .art-hero__photo{aspect-ratio:auto!important;height:clamp(260px,min(calc(100svh - 470px),calc((100vw - 32px) * 1.2496)),560px)!important}
- html body.approved-recruit .art-hero__photo img{object-position:50% 30%!important}
+ html body.approved-recruit .art-hero__photo{aspect-ratio:auto!important;height:clamp(170px,min(calc(100svh - 480px),calc((100vw - 32px) * 1.2496)),560px)!important}
+ html body.approved-recruit .art-hero__photo img{object-position:50% 12%!important}
 }
