@@ -1,3 +1,11 @@
+// 모바일: 스크롤 중 주소창이 접히고 펴지며 innerHeight 가 바뀌면 카드·문구 위치가 다시 계산돼 떨리므로,
+// 움직임 계산에는 CSS 와 같은 고정 높이(100svh)를 쓴다.
+const vhProbe=document.createElement('div');vhProbe.setAttribute('aria-hidden','true');
+vhProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
+document.documentElement.append(vhProbe);
+let vhCache=vhProbe.offsetHeight||window.innerHeight;
+addEventListener('resize',()=>{vhCache=vhProbe.offsetHeight||window.innerHeight;}); // 100svh 는 주소창이 움직여도 그대로라 폰에선 값이 변하지 않음
+const stableVH=()=>vhCache;
 (() => {
   'use strict';
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -13,10 +21,10 @@
       const closest=targets.map(element=>{
         const block=element.querySelector('.culture-principle-copy')||element;
         const rect=block.getBoundingClientRect();
-        const delta=element.matches('.culture-principle-row')?rect.top+rect.height/2-innerHeight*.5:rect.top-104;
+        const delta=element.matches('.culture-principle-row')?rect.top+rect.height/2-stableVH()*.5:rect.top-104;
         return {element,delta};
       }).sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0];
-      if(!closest||Math.abs(closest.delta)>innerHeight*.48||Math.abs(closest.delta)<3||closest.element===lastTarget)return;
+      if(!closest||Math.abs(closest.delta)>stableVH()*.48||Math.abs(closest.delta)<3||closest.element===lastTarget)return;
       lastTarget=closest.element;snapping=true;
       const done=()=>{snapping=false;};
       if(lenis)lenis.scrollTo(scrollY+closest.delta,{duration:.3,easing:t=>1-Math.pow(1-t,4),onComplete:done});
@@ -288,11 +296,11 @@
       const finalBottom=initialTop-maxLift+container.offsetHeight;
       const handoff=Math.max(0,scene.offsetHeight-finalBottom-Math.max(40,innerWidth*.035));
       wordsPile.style.setProperty('--pile-handoff',`${handoff}px`);
-      scrollDistance=scene.offsetHeight+innerHeight*count*.3;
+      scrollDistance=scene.offsetHeight+stableVH()*count*.3;
       wordsPile.style.height=`${scene.offsetHeight+scrollDistance}px`;
       animations=phrases.map(phrase=>{
         const animation=phrase.animate(
-          [{transform:`translate3d(0,${innerHeight}px,0)`},{transform:'translate3d(0,0,0)'}],
+          [{transform:`translate3d(0,${stableVH()}px,0)`},{transform:'translate3d(0,0,0)'}],
           {duration,fill:'both',easing:'cubic-bezier(.33,0,.10,1)'}
         );
         animation.pause();return animation;
@@ -335,8 +343,8 @@
       const navigation=document.querySelector('.site-header');
       const navigationTop=navigation?parseFloat(getComputedStyle(navigation).top)||0:0;
       pinTop=Math.max(104,(navigation?.offsetHeight||0)+navigationTop+20);
-      const holdDistance=innerHeight*.75;
-      startTop=innerHeight*.82;
+      const holdDistance=stableVH()*.75;
+      startTop=stableVH()*.82;
       travel=startTop-pinTop+holdDistance;
       productPile.style.height=`${stage.offsetHeight+holdDistance}px`;
       productPile.style.setProperty('--product-pin-top',`${pinTop}px`);
@@ -348,13 +356,13 @@
         const animation=element.animate([from,to],{duration:1000,fill:'both',easing:'cubic-bezier(.22,1,.36,1)'});
         animation.pause();entries.push({animation,start,end});
       };
-      if(title)rise(title,0,.22,innerHeight*.2,true);
+      if(title)rise(title,0,.22,stableVH()*.2,true);
       cards.forEach((card,index)=>{
         // Repeat the same three-card cadence in every carousel copy.
         const delay=(index%(cards.length/3))*.065;
-        rise(card,.12+delay,.52+delay,innerHeight*.62);
+        rise(card,.12+delay,.52+delay,stableVH()*.62);
       });
-      if(answer)rise(answer,.53,.82,innerHeight*.27,true);
+      if(answer)rise(answer,.53,.82,stableVH()*.27,true);
       updateProductPile();lenis?.resize();
     };
     addEventListener('scroll',scheduleProductPile,{passive:true});
@@ -416,7 +424,7 @@
     slides.forEach(slide=>{
       const panel=slide.querySelector('.story-panel');
       slide.style.setProperty('--panel-height',`${panel.offsetHeight}px`);
-      slide.classList.toggle('is-tall',panel.offsetHeight>innerHeight-40);
+      slide.classList.toggle('is-tall',panel.offsetHeight>stableVH()-40);
     });
     lenis?.resize();
   }
@@ -425,7 +433,7 @@
   function updateHero(){
     if(!hero)return;
     const distance=Math.max(0,-hero.getBoundingClientRect().top);
-    const raw=clamp(distance/Math.min(innerHeight*.32,260));
+    const raw=clamp(distance/Math.min(stableVH()*.32,260));
     const frame=reduced.matches?(distance>24?1:0):raw*raw*(3-2*raw);
     const navRaw=clamp((distance-24)/120);
     const nav=reduced.matches?(distance>24?1:0):navRaw*navRaw*(3-2*navRaw);
@@ -445,7 +453,7 @@
     if(reduced.matches)return;
     slides.forEach((slide,index)=>{
       const panel=slide.querySelector('.story-panel');
-      const p=slide.classList.contains('is-tall')?0:clamp(-slide.getBoundingClientRect().top/innerHeight);
+      const p=slide.classList.contains('is-tall')?0:clamp(-slide.getBoundingClientRect().top/stableVH());
       const eased=p*p;
       panel.style.setProperty('--card-scale',String(1-.3*eased));
       panel.style.setProperty('--card-rx',`${40*eased}deg`);
@@ -453,7 +461,7 @@
       panel.style.setProperty('--card-opacity',String(1-clamp((p-.75)/.25)));
     });
     const portrait=document.querySelector('.intro-portrait');
-    if(portrait&&innerWidth>760){const p=clamp((innerHeight-portrait.getBoundingClientRect().top)/(innerHeight+portrait.offsetHeight));portrait.style.transform=`rotate(${-5+p*10}deg)`;}
+    if(portrait&&innerWidth>760){const p=clamp((stableVH()-portrait.getBoundingClientRect().top)/(stableVH()+portrait.offsetHeight));portrait.style.transform=`rotate(${-5+p*10}deg)`;}
   }
   const schedule=()=>{if(!scheduled){scheduled=true;requestAnimationFrame(updateScroll);}};
   addEventListener('scroll',schedule,{passive:true});addEventListener('resize',()=>{measureCards();schedule();},{passive:true});
@@ -469,7 +477,7 @@
   const shots=[...gallery.querySelectorAll('[data-drift]')];
   const reduce=matchMedia('(prefers-reduced-motion: reduce)');
   let queued=false;
-  const paint=()=>{queued=false;const rect=gallery.getBoundingClientRect();const progress=Math.max(-1,Math.min(1,(innerHeight/2-rect.top)/(rect.height+innerHeight)*2));shots.forEach(shot=>shot.style.setProperty('--drift',`${reduce.matches?0:progress*Number(shot.dataset.drift)}px`));};
+  const paint=()=>{queued=false;const rect=gallery.getBoundingClientRect();const progress=Math.max(-1,Math.min(1,(stableVH()/2-rect.top)/(rect.height+stableVH())*2));shots.forEach(shot=>shot.style.setProperty('--drift',`${reduce.matches?0:progress*Number(shot.dataset.drift)}px`));};
   const schedule=()=>{if(!queued){queued=true;requestAnimationFrame(paint);}};
   addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);paint();
 })();
@@ -508,7 +516,7 @@
     const distance=Math.max(0,-root.top);
     const stage=mask&&!mask.hidden?mask.querySelector('.unicorn-mask-stage'):null;
     const stickyTop=stage?parseFloat(getComputedStyle(stage).top)||0:0;
-    const end=stage?mask.offsetTop-stickyTop:target.offsetTop+target.parentElement.offsetTop-innerHeight*.2;
+    const end=stage?mask.offsetTop-stickyTop:target.offsetTop+target.parentElement.offsetTop-stableVH()*.2;
     const raw=Math.max(0,Math.min(1,distance/Math.max(1,end)));
     const approvedHeader=document.querySelector('.approved-company .approved-header');
     if(approvedHeader){
@@ -519,14 +527,14 @@
     }
     const p=raw*raw*(3-2*raw);
     const width=innerWidth+(box.width-innerWidth)*p;
-    const height=innerHeight+(box.height-innerHeight)*p;
+    const height=stableVH()+(box.height-stableVH())*p;
     // Keep the video viewport stable: animate its crop, never resize the iframe per frame.
     const targetTop=stage&&distance<end?stickyTop+target.offsetTop:box.top;
     const left=(box.left-root.left)*p,top=targetTop*p;
     const radius=(stage?10:24)*p; // 10/19: match the 10px card corners in the unicorn stage.
-    Object.assign(media.style,{left:'0px',top:`${distance}px`,width:`${innerWidth}px`,height:`${innerHeight}px`,borderRadius:'0px',clipPath:`inset(${top}px ${innerWidth-left-width}px ${innerHeight-top-height}px ${left}px round ${radius}px)`});
-    media.style.setProperty('--film-width',`${Math.max(innerWidth,(innerHeight+120)*16/9)}px`);
-    media.style.setProperty('--film-height',`${Math.max(innerHeight+120,innerWidth*9/16)}px`);
+    Object.assign(media.style,{left:'0px',top:`${distance}px`,width:`${innerWidth}px`,height:`${innerHeight}px`,borderRadius:'0px',clipPath:`inset(${top}px ${innerWidth-left-width}px ${stableVH()-top-height}px ${left}px round ${radius}px)`});
+    media.style.setProperty('--film-width',`${Math.max(innerWidth,(stableVH()+120)*16/9)}px`);
+    media.style.setProperty('--film-height',`${Math.max(stableVH()+120,innerWidth*9/16)}px`);
     media.style.setProperty('--film-shade',String(.13+.32*p));
     hero.style.setProperty('--opening-copy-opacity',String(1-Math.min(1,raw*3)));
   };
@@ -547,7 +555,7 @@
     if(!layer.classList.contains('is-playing'))playFallback();
     if(!ready||document.hidden)return;
     const box=layer.getBoundingClientRect();
-    if(box.bottom<=0||box.top>=innerHeight)return;
+    if(box.bottom<=0||box.top>=stableVH())return;
     if(player.getPlayerState()!==1){player.mute();player.playVideo();}
   };
   addEventListener('pageshow',resume);
@@ -718,7 +726,7 @@ if(visionMask){
  }
  const clamp=n=>Math.max(0,Math.min(1,n));
  // 3차: 뷰포트 기준 하단 여백 40px — 고정된 인트로 아래에서 쓸 수 있는 높이(도시 줄·확대 영상 모두 이 안에)
- const availH=()=>{if(innerWidth<=700)return Infinity;const top=heading?heading.getBoundingClientRect().height+(parseFloat(getComputedStyle(heading).top)||0):0;return Math.max(320,innerHeight-top-40);};
+ const availH=()=>{if(innerWidth<=700)return Infinity;const top=heading?heading.getBoundingClientRect().height+(parseFloat(getComputedStyle(heading).top)||0):0;return Math.max(320,stableVH()-top-40);};
  const filmH=w=>Math.min(w*9/16,availH());
  // End the sticky track as soon as the film and its headline are fully revealed.
  function measure(){
@@ -728,7 +736,7 @@ if(visionMask){
   const insetX=0;
   const filmHeight=filmH(Math.max(1,stage.clientWidth-insetX*2));
   stage.style.height=`${Math.ceil(Math.max(rows.scrollHeight,filmHeight))}px`;
-  const travel=Math.max(1,innerHeight*(innerWidth<=700?.6:1.5)-stage.offsetHeight)*.8; // 3차: 데스크톱도 고정 구간 축소(2.3→1.5) → 영상 카드 아래 빈 공간이 길게 보이지 않게 // 3차: 모바일은 고정 구간을 짧게 → 영상 카드와 CTA 사이 빈 간격 최소화 // 3차: 모바일은 하단 여백이 너무 커서 이동 거리 축소
+  const travel=Math.max(1,stableVH()*(innerWidth<=700?.6:1.5)-stage.offsetHeight)*.8; // 3차: 데스크톱도 고정 구간 축소(2.3→1.5) → 영상 카드 아래 빈 공간이 길게 보이지 않게 // 3차: 모바일은 고정 구간을 짧게 → 영상 카드와 CTA 사이 빈 간격 최소화 // 3차: 모바일은 하단 여백이 너무 커서 이동 거리 축소
   section.style.height=`${stage.offsetHeight+travel}px`;
  }
  function update(){
@@ -755,13 +763,13 @@ if(visionMask){
    const visible=(pool.length?pool:[...rows.querySelectorAll('video')]).map(video=>{
     const box=video.getBoundingClientRect();
     const width=Math.max(0,Math.min(box.right,rect.right,innerWidth)-Math.max(box.left,rect.left,0));
-    const height=Math.max(0,Math.min(box.bottom,rect.bottom,innerHeight)-Math.max(box.top,rect.top,inset));
+    const height=Math.max(0,Math.min(box.bottom,rect.bottom,stableVH())-Math.max(box.top,rect.top,inset));
     return {video,box,ratio:width*height/Math.max(1,box.width*box.height)};
    }).filter(item=>item.ratio>0);
    if(!visible.length){section.classList.remove('is-expanding');return;}
    // Choose the film nearest the visible screen centre at this moment.
    // Every film is eligible; the moving rows make the selected film vary naturally.
-   const centerX=innerWidth/2,centerY=(Math.max(0,rect.top)+Math.min(innerHeight,rect.bottom))/2;
+   const centerX=innerWidth/2,centerY=(Math.max(0,rect.top)+Math.min(stableVH(),rect.bottom))/2;
    visible.sort((a,b)=>Math.hypot(a.box.x+a.box.width/2-centerX,a.box.y+a.box.height/2-centerY)-Math.hypot(b.box.x+b.box.width/2-centerX,b.box.y+b.box.height/2-centerY));
    const {video:source,box:b}=visible[0];
    origin={x:b.x-rect.x,y:b.y-rect.y,w:b.width,h:b.height};
@@ -918,8 +926,8 @@ if(visionMask){
  const smooth=n=>{const t=clamp(n);return t*t*(3-2*t);};
  function sizeCards(){
   if(mask.hidden)return;
-  const portrait=innerWidth<768?innerHeight*.52:Math.min((stage.clientWidth-64)*1.15/3.15,innerHeight*.48)*1.5;
-  const product=Math.max(306,Math.min(535.5,Math.max(innerWidth*.26775,innerHeight*.36975)));
+  const portrait=innerWidth<768?stableVH()*.52:Math.min((stage.clientWidth-64)*1.15/3.15,stableVH()*.48)*1.5;
+  const product=Math.max(306,Math.min(535.5,Math.max(innerWidth*.26775,stableVH()*.36975)));
   let cardH=(portrait+product)/2;
   if(innerWidth<768){ // 3차: 화면이 낮은 휴대폰에서도 헤더와 'WE CALL THEM' 사이 여백(최소 56px)이 남도록 카드 높이를 줄임(비율 유지)
    const gap=parseFloat(getComputedStyle(stage).rowGap)||14,pad=56;
@@ -938,7 +946,7 @@ if(visionMask){
   const rect=mask.getBoundingClientRect(),top=parseFloat(getComputedStyle(stage).top)||0;
   // preview: hold the scroll at p=.27 for ~1.1 screens to show the third line, then continue as before
   const scrolledPx=top-rect.top,totalPx=Math.max(1,mask.offsetHeight-stage.offsetHeight);
-  const plateauPx=mask.classList.contains('has-linked-flow')&&!mask.classList.contains('is-previous-spread')?innerHeight*1.1:0;
+  const plateauPx=mask.classList.contains('has-linked-flow')&&!mask.classList.contains('is-previous-spread')?stableVH()*1.1:0;
   const baseTotal=Math.max(1,totalPx-plateauPx),r0=(mask.classList.contains('has-linked-flow')?.58:1)*.27,startPx=r0*baseTotal;
   thirdProgress=plateauPx?clamp((scrolledPx-startPx)/plateauPx):0; thirdPassed=plateauPx&&scrolledPx>startPx;
   const target=clamp(scrolledPx<startPx?scrolledPx/baseTotal:scrolledPx<startPx+plateauPx?r0:(scrolledPx-plateauPx)/baseTotal);
@@ -962,7 +970,7 @@ if(visionMask){
   mask.classList.toggle('is-third-phase',darkScene&&thirdPassed&&p<.3); // preview: keep the film visible behind the third line
   const manifesto=document.querySelector('.reimagine-flow')?.getBoundingClientRect();
   document.body.classList.toggle('unicorn-dark-active',(darkScene&&rect.bottom>top+80)||!!(manifesto&&manifesto.top<=top+80&&manifesto.bottom>top+80));
-  const entrance=reduce.matches?1:smooth((innerHeight*.7-rect.top)/(innerHeight*.5));
+  const entrance=reduce.matches?1:smooth((stableVH()*.7-rect.top)/(stableVH()*.5));
   title.querySelectorAll('.unicorn-title-line>span').forEach((line,i)=>{
    const reveal=reduce.matches?1:smooth((entrance-i*.22)/(1-i*.22));
    line.style.transform=`translateY(${105*(1-reveal)}%)`;
@@ -1032,10 +1040,10 @@ if(visionMask){
    const j=i-4,lead=j===0&&plateauPx>0;
    const arrival=reduce.matches?1:lead?firstIntro:smooth((p-(.42+j*.08))/.1);
    const covered=j<2?smooth((p-(.42+(j+1)*.08))/.1):0;
-   const rise=lead?Math.min(340,innerHeight*.42):Math.min(180,innerHeight*.22);
+   const rise=lead?Math.min(340,stableVH()*.42):Math.min(180,stableVH()*.22);
    card.style.transform=`translate3d(${ -j*(frame.offsetWidth+24)*(1-spread)}px,${(1-arrival)*rise-covered*12*(1-spread)}px,0) rotate(${[-1.5,1,-1,1.5][j]*(1-spread)*(lead?arrival:1)}deg) scale(${1-(1-arrival)*(lead?.08:.06)-covered*.035*(1-spread)})`;
    card.style.opacity=lead?smooth(firstIntroRaw/.45):smooth(arrival/.25);
-   if(lead)card.style.filter=arrival<.999?`blur(${(5*(1-arrival)).toFixed(2)}px)`:'';
+   if(lead)card.style.filter=arrival<.999&&window.innerWidth>=768?`blur(${(5*(1-arrival)).toFixed(2)}px)`:''; // 모바일은 블러 생략(떨림·끊김 방지)
    card.style.zIndex=String(j+1);
    const fadeOut=j>=2?1:1-smooth((p-(.42+(j+1)*.08))/.035);
    detailItems[j].style.opacity=j===3?0:smooth((arrival-.6)/.4)*fadeOut;
@@ -1066,7 +1074,7 @@ if(visionMask){
   requestAnimationFrame(flow);
   const dt=railLast?Math.min(50,now-railLast):0;railLast=now;
   if(!wasSpread||mask.hidden||mask.classList.contains('is-previous-spread')||document.hidden||drag||railHover||reduce.matches)return;
-  const r=carousel.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
+  const r=carousel.getBoundingClientRect();if(r.bottom<0||r.top>stableVH())return;
   const w=parseFloat(carousel.style.getPropertyValue('--project-width'))||0,g=parseFloat(carousel.style.getPropertyValue('--project-gap'))||0;
   setRailOffset(railOffset-dt*((w+g)/6000));
  })(performance.now());
@@ -1159,7 +1167,7 @@ sentence.style.transform=keep;}
  let pending=false,last=-1;
  const paint=()=>{
   pending=false;
-  const progress=Math.max(0,Math.min(1,(innerHeight*.5-section.getBoundingClientRect().top)/(innerHeight*.3)));
+  const progress=Math.max(0,Math.min(1,(stableVH()*.5-section.getBoundingClientRect().top)/(stableVH()*.3)));
   const count=reduced.matches?characters.length:Math.floor(progress*characters.length);
   document.body.classList.toggle('culture-typing-complete',count===characters.length);
   if(count!==last){output.textContent=characters.slice(0,count).join('');last=count;}
@@ -1213,7 +1221,7 @@ sentence.style.transform=keep;}
   for(const {element,words} of items){
    // Start heading typing at the viewport center, then reveal the body.
    const heading=element.closest('.culture-principle-copy').querySelector('h3');
-   const progress=reduced.matches?1:Math.max(0,Math.min(1,(innerHeight*.3-heading.getBoundingClientRect().top)/(innerHeight*.25)));
+   const progress=reduced.matches?1:Math.max(0,Math.min(1,(stableVH()*.3-heading.getBoundingClientRect().top)/(stableVH()*.25)));
    const filled=Math.floor(progress*words.length);
    words.forEach((word,i)=>{word.style.opacity=i<filled?'1':'.18';});
   }
@@ -1240,7 +1248,7 @@ sentence.style.transform=keep;}
  const paint=()=>{
   queued=false;
   for(const item of items){
-   const progress=Math.max(0,Math.min(1,(innerHeight*.5-item.element.getBoundingClientRect().top)/(innerHeight*.2)));
+   const progress=Math.max(0,Math.min(1,(stableVH()*.5-item.element.getBoundingClientRect().top)/(stableVH()*.2)));
    const count=reduced.matches?item.characters.length:Math.floor(progress*item.characters.length);
    if(count!==item.last){item.output.textContent=item.characters.slice(0,count).join('');item.last=count;}
   }
@@ -1315,7 +1323,7 @@ sentence.style.transform=keep;}
   document.body.classList.toggle('culture-light-section',top<=92);
   const statement=document.querySelector('.culture-fixed-statement');
   if(statement){
-   const progress=Math.max(0,Math.min(1,(top-innerHeight)/Math.max(160,innerHeight*.22)));
+   const progress=Math.max(0,Math.min(1,(top-stableVH())/Math.max(160,stableVH()*.22)));
    const opacity=progress*progress*(3-2*progress);
    statement.style.setProperty('--statement-visibility',opacity);
    statement.style.setProperty('--statement-exit-y',`${(1-opacity)*10}px`);
@@ -1331,7 +1339,7 @@ sentence.style.transform=keep;}
  if(!question||!statement)return;
  let previous=null;
  const update=()=>{
-  const real=question.getBoundingClientRect().top<=innerHeight*.72;
+  const real=question.getBoundingClientRect().top<=stableVH()*.72;
   if(real===previous)return;previous=real;
   statement.classList.add('statement-entering');
   statement.replaceChildren(...(real?'AND WE MAKE IT REAL':'WE IMAGINE WHAT SHOULD EXIST').split(' ').flatMap((word,i)=>{
