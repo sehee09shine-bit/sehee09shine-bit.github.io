@@ -1,0 +1,19 @@
+/* 언어 메뉴 (KR · EN · JP) — 모든 페이지 공통. 예전 헤더의 'KR' 표시 자리에 들어감 */
+.approved-header .approved-lang{display:flex;align-items:center;gap:12px;margin:0 0 0 4px;padding:0;background:none;border-radius:0}
+.approved-header .approved-lang a{font:500 14px/1 Helvetica,Arial,sans-serif;color:#a3a3a3;padding:4px 0;background:none;border-radius:0;text-decoration:none;min-height:0}
+.approved-header .approved-lang a:hover{color:#111}
+.approved-header .approved-lang a[aria-current]{color:#111}
+/* 모바일 메뉴용 사본은 PC에서는 숨김 */
+.approved-header nav .approved-lang--menu{display:none!important}
+
+@media(max-width:700px){
+ /* 모바일: 헤더에는 숨기고, 메뉴를 펼쳤을 때 메뉴 맨 아래에 표시 */
+ html body .approved-header>.approved-lang{display:none!important}
+ html body .approved-header.is-menu-open nav .approved-lang--menu{display:flex!important;gap:20px;margin:20px 0 0;padding:20px 0 0;border-top:1px solid #ececec;background:none!important}
+ html body .approved-header.is-menu-open nav .approved-lang--menu a{font-size:16px!important;font-weight:500!important;color:#a3a3a3!important;padding:4px 0!important;margin:0!important;min-height:0!important;background:none!important}
+ html body .approved-header.is-menu-open nav .approved-lang--menu a[aria-current]{color:#111!important}
+}
+
+/* 일본어: 한국어용 단어 단위 줄바꿈(keep-all)을 풀어야 띄어쓰기 없는 문장이 화면 안에서 줄바꿈됨.
+   line-break:strict 로 句読点(、。)·작은 가나가 줄 맨 앞에 오지 않게 */
+html:lang(ja) body,html:lang(ja) body *{word-break:normal!important;line-break:strict}
