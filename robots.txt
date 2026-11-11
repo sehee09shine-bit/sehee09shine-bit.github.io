@@ -1,5 +1,3 @@
+# 검수용 사본 — 검색 노출 안 함 (운영: https://yourunicorn.world)
 User-agent: *
-Allow: /
-Disallow: /approved-company.html
-
-Sitemap: https://sehee09shine-bit.github.io/sitemap.xml
+Disallow: /
