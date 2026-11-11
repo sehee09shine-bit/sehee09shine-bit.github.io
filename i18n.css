@@ -9,7 +9,7 @@
 .approved-lang__chev{width:11px;height:11px;stroke-width:1.6;transition:transform .2s ease}
 .approved-header .approved-lang--pick[open] .approved-lang__chev{transform:rotate(180deg)}
 .approved-header .approved-lang--pick summary:focus-visible{outline:2px solid #111;outline-offset:2px}
-.approved-lang__list{position:absolute;right:-6px;top:calc(100% + 8px);min-width:64px;padding:5px;background:#fff;border:1px solid #e8e8e8;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.08);display:flex;flex-direction:column;z-index:10010}
+.approved-lang__list{position:absolute;right:-6px;top:calc(100% + 8px);min-width:64px;padding:5px;background:#fff;border:1px solid #e8e8e8;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:3px;z-index:10010}
 /* 글자 모양은 헤더의 현재 언어 표시(summary)와 같게 */
 .approved-lang__list a{display:block;padding:10px 14px;white-space:nowrap;border-radius:7px;font:500 14px/1 Helvetica,Arial,sans-serif;color:#a3a3a3;text-decoration:none;text-align:left}
 .approved-lang__list a:hover{background:#f4f4f4;color:#111}
