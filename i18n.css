@@ -21,8 +21,8 @@
 @media(max-width:700px){
  /* 모바일: 헤더에는 숨기고, 메뉴를 펼쳤을 때 메뉴 맨 아래에 표시 */
  html body .approved-header>.approved-lang{display:none!important}
- /* 회색 블록(헤더 메뉴 바와 같은 색) 안에 지구본 + KR EN JP, 현재 언어는 흰 칸 */
- html body .approved-header.is-menu-open nav .approved-lang--menu{display:flex!important;align-items:center;gap:2px;margin:28px 0 0;padding:4px!important;border:0;border-radius:10px;background:#f1f1f1!important}
+ /* 회색 블록(헤더 메뉴 바와 같은 색, 내용 폭만큼) 안에 지구본 + KR EN JP, 현재 언어는 흰 칸 */
+ html body .approved-header.is-menu-open nav .approved-lang--menu{display:inline-flex!important;width:max-content;max-width:100%;align-self:flex-start;align-items:center;gap:2px;margin:28px 0 0;padding:4px!important;border:0;border-radius:10px;background:#f1f1f1!important}
  html body .approved-header.is-menu-open nav .approved-lang--menu .approved-lang__globe{width:20px;height:20px;margin:0 6px 0 10px;color:#111}
  html body .approved-header.is-menu-open nav .approved-lang--menu a{font-size:16px!important;font-weight:500!important;color:#a3a3a3!important;padding:10px 14px!important;margin:0!important;min-height:0!important;border-radius:7px;background:none!important}
  html body .approved-header.is-menu-open nav .approved-lang--menu a[aria-current]{color:#111!important;background:#fff!important}
