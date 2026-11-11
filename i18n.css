@@ -49,3 +49,20 @@ html:lang(en) body .unicorn-mask-copy :is(.unicorn-mask-first,.unicorn-mask-seco
 /* 일본어 컬처 제목(U-01-01, 고객사 확인: 한국어처럼 3줄): 가나·한자는 한글보다 글자 폭이 넓어 PC에서 줄이 넘치므로 PC만 조금 작게 */
 @media (min-width:1024px){html:lang(ja) body .art-hero h1{font-size:calc(var(--t-h1) * .8)}}
 @media (max-width:359px){html:lang(ja) body.approved-page .art-hero h1{font-size:calc(var(--m-h1) * .86)!important}}
+
+/* 영어 행간(:not(#_i18n)은 기존 모바일 규칙이 id 선택자를 써서 그보다 우선하게 하려는 것): 한국어와 같은 행간이면 영문은 글자 키(소문자)가 낮아 줄 사이가 더 비어 보임 → 한국어 화면과 나란히 놓고 눈으로 맞춘 값.
+   본문 */
+html:lang(en):not(#_i18n) body :is(.fx-line,.fx-fixed,.cx-card p,.cx-fixed,.art-hero__intro,.job__desc,.lead,.pb-ko,.company-hero-ko,.cx-screen__ko,.acc__panel p,.talent-detail p){line-height:1.48!important}
+@media (min-width:1024px){html:lang(en):not(#_i18n) body :is(.approved-team-intro .lead,.benefits-section .lead,.lead .fx-line,.lead){line-height:1.36!important}}
+/* 작은 설명 글 */
+html:lang(en):not(#_i18n) body :is(.feedback-line,.product-face-back p,.retail-collection__photos figcaption span){line-height:1.26!important}
+html:lang(en):not(#_i18n) body .cascade-description p{line-height:1.28!important}
+/* 제목(대소문자 섞인 것) */
+html:lang(en):not(#_i18n) body .art-hero h1{line-height:1.06!important}
+html:lang(en):not(#_i18n) body .reimagine-flow-korean{line-height:1.1!important}
+html:lang(en):not(#_i18n) body .global-cities-intro h2{line-height:1.15!important}
+html:lang(en):not(#_i18n) body .art-next__content strong{line-height:1.2!important}
+html:lang(en):not(#_i18n) body .unicorn-mask-copy :is(.unicorn-mask-first,.unicorn-mask-second,.unicorn-mask-third){line-height:1.12!important}
+@media (max-width:1023px){html:lang(en):not(#_i18n) body.approved-page .cx-card .cx-card__title{line-height:1.18!important}}
+/* 대문자 제목은 한국어와 글자 키가 비슷해 조금만 */
+html:lang(en):not(#_i18n) body .growth-tags-heading h2{line-height:1.2!important}
