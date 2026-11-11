@@ -44,7 +44,7 @@ html:lang(en) body :is(.pb-next__title,.vis-title,.unicorn-mask-title,.cx-card__
 html:lang(en) body .growth-cascade-card h3{text-wrap:wrap}
 
 /* 영어: 'What is a unicorn' 카드 안 문구가 한국어보다 길어 한 줄 고정이면 카드 밖으로 잘림 → 줄바꿈 허용 + 조금 작게 */
-html:lang(en) body .unicorn-mask-copy :is(.unicorn-mask-first,.unicorn-mask-second,.unicorn-mask-third){white-space:normal;text-wrap:balance;font-size:min(clamp(16px,1.75vw,24px),8.4cqi)!important;line-height:1.22!important}
+html:lang(en) body .unicorn-mask-copy :is(.unicorn-mask-first,.unicorn-mask-second,.unicorn-mask-third){white-space:normal;text-wrap:balance;font-size:min(clamp(16px,1.75vw,24px),8.1cqi)!important;line-height:1.22!important}
 
 /* 일본어 컬처 제목(U-01-01, 고객사 확인: 한국어처럼 3줄): 가나·한자는 한글보다 글자 폭이 넓어 PC에서 줄이 넘치므로 PC만 조금 작게 */
 @media (min-width:1024px){html:lang(ja) body .art-hero h1{font-size:calc(var(--t-h1) * .8)}}
@@ -66,3 +66,11 @@ html:lang(en):not(#_i18n) body .unicorn-mask-copy :is(.unicorn-mask-first,.unico
 @media (max-width:1023px){html:lang(en):not(#_i18n) body.approved-page .cx-card .cx-card__title{line-height:1.18!important}}
 /* 대문자 제목은 한국어와 글자 키가 비슷해 조금만 */
 html:lang(en):not(#_i18n) body .growth-tags-heading h2{line-height:1.2!important}
+/* QA 2차(2026-11-11) */
+/* JP: 스크립트가 폭에 맞춰 글자 크기를 줄이는 제목은 단어 중간 줄바꿈을 허용하면 안 줄어들고 'PRODUCT/S'처럼 끊김 */
+html:lang(ja) body .unicorn-stack-title,html:lang(ja) body .unicorn-stack-title *{overflow-wrap:normal}
+/* 마지막 줄에 한두 글자만 남지 않게 줄 길이를 고르게 */
+html:lang(ja) body :is(.feedback-line,.talent-summary){text-wrap:balance}
+html:lang(en) body .art-next__content strong{text-wrap:balance}
+/* EN·JP 모바일 제품 설명: 시트의 줄 구분(" / ")대로 줄마다 따로. 한국어는 짧아 한 줄에 이어 쓰지만 영어·일본어는 길어서 문장 중간에서 끊겼음 */
+@media (max-width:767px){html:is(:lang(en),:lang(ja)):not(#_i18n) body .unicorn-stack-description .feedback-line{display:block!important}}
