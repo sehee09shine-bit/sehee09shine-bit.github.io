@@ -74,3 +74,10 @@ html:lang(ja) body :is(.feedback-line,.talent-summary){text-wrap:balance}
 html:lang(en) body .art-next__content strong{text-wrap:balance}
 /* EN·JP 모바일 제품 설명: 시트의 줄 구분(" / ")대로 줄마다 따로. 한국어는 짧아 한 줄에 이어 쓰지만 영어·일본어는 길어서 문장 중간에서 끊겼음 */
 @media (max-width:767px){html:is(:lang(en),:lang(ja)):not(#_i18n) body .unicorn-stack-description .feedback-line{display:block!important}}
+/* 1차 수정(2026-11-12): EN 대문자로 바뀐 도시 섹션 제목(C-10-02). 모바일에서는 시트 줄 구분대로면 줄마다 다시 꺾여 4줄('WORLD.'만 한 줄)이 되므로 줄 구분을 풀고 고르게 3줄 */
+@media (max-width:767px){html:lang(en):not(#_i18n) body #global-cities-heading br{display:none}html:lang(en):not(#_i18n) body #global-cities-heading{text-wrap:balance}}
+/* 1차 수정(2026-11-12): EN 대문자로 바뀐 'HOW SHOULD IT BE DONE' 아래 문구(C-04-05). 폰에서는 26px 이면 5줄('BEEN DONE,' 'SCRATCH.' 만 한 줄)이 되므로 화면 폭에 맞춰 조금 줄여 3줄(시트 첫 줄 2줄 + 둘째 줄 1줄) */
+@media (max-width:767px){html:lang(en):not(#_i18n) body .reimagine-flow-korean{font-size:min(26px,5.7vw)!important;text-wrap:balance}}
+/* 같은 문구, 태블릿·PC: 대문자 첫 줄이 상자 폭에 거의 꽉 차(1440에서 여유 2px) 글꼴이 조금만 달라도 'BEEN DONE,' 이 밀려 내려가므로 6%쯤 여유를 둠. 밀리더라도 줄 길이는 고르게 */
+html:lang(en):not(#_i18n) body .reimagine-flow-korean{text-wrap:balance}
+@media (min-width:768px){html:lang(en):not(#_i18n) body .reimagine-flow-korean{font-size:min(var(--ko-size,48px),3vw)!important}}
