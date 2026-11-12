@@ -37,17 +37,20 @@ html:lang(ja) body .culture-typed{word-break:normal!important}
 
 /* 영어: 제목·줄 단위 문구는 줄 길이를 고르게, 본문은 마지막 줄에 단어 하나만 남지 않게 (지원 안 하는 브라우저는 기존과 같음).
    일본어는 위 구절 줄바꿈으로 충분하고, balance 를 같이 쓰면 줄을 일부러 짧게 나눠 PC 제목이 6줄이 되므로 쓰지 않음 */
-html:lang(en) body :is(h1,h2,h3,h4,figcaption,.feedback-line,.cascade-description p,.vis-title + p){text-wrap:balance}
-html:lang(en) body p{text-wrap:pretty}
+/* text-wrap(줄임 속성)를 쓰면 '한 줄 고정'(white-space:nowrap)까지 풀려 버림 → 줄 나누는 방식만 바꾸는 text-wrap-style 사용(2026-11-12 수정).
+   전에는 컬처 'HOW WE WORK' 제목 자리가 두 줄이 되어 글자가 작아지고 아래 문구와 간격이 벌어졌음 */
+html:lang(en) body :is(h1,h2,h3,h4,figcaption,.feedback-line,.cascade-description p,.vis-title + p){text-wrap-style:balance}
+html:lang(en) body p{text-wrap-style:pretty}
 /* 한국어 페이지와 영문이 똑같은 제목은 한국어 페이지와 같은 모양 유지 */
-html:lang(en) body :is(.pb-next__title,.vis-title,.unicorn-mask-title,.cx-card__title,.cx-screen__title,.section-title.gallery-question){text-wrap:wrap}
-html:lang(en) body .growth-cascade-card h3{text-wrap:wrap}
+html:lang(en) body :is(.pb-next__title,.vis-title,.unicorn-mask-title,.cx-card__title,.cx-screen__title,.section-title.gallery-question){text-wrap-style:auto}
+html:lang(en) body .growth-cascade-card h3{text-wrap-style:auto}
 
 /* 영어: 'What is a unicorn' 카드 안 문구가 한국어보다 길어 한 줄 고정이면 카드 밖으로 잘림 → 줄바꿈 허용 + 조금 작게 */
 html:lang(en) body .unicorn-mask-copy :is(.unicorn-mask-first,.unicorn-mask-second,.unicorn-mask-third){white-space:normal;text-wrap:balance;font-size:min(clamp(16px,1.75vw,24px),8.1cqi)!important;line-height:1.22!important}
 
 /* 일본어 컬처 제목(U-01-01, 고객사 확인: 한국어처럼 3줄): 가나·한자는 한글보다 글자 폭이 넓어 PC에서 줄이 넘치므로 PC만 조금 작게 */
-@media (min-width:1024px){html:lang(ja) body .art-hero h1{font-size:calc(var(--t-h1) * .8)}}
+/* PC 배치는 901px 부터 시작. 전에는 1024px 부터만 줄여서 901~1023px 창에서 6줄로 쪼개졌음(2026-11-12 수정) */
+@media (min-width:901px){html:lang(ja) body .art-hero h1{font-size:calc(var(--t-h1) * .8)}}
 @media (max-width:359px){html:lang(ja) body.approved-page .art-hero h1{font-size:calc(var(--m-h1) * .86)!important}}
 
 /* 영어 행간(:not(#_i18n)은 기존 모바일 규칙이 id 선택자를 써서 그보다 우선하게 하려는 것): 한국어와 같은 행간이면 영문은 글자 키(소문자)가 낮아 줄 사이가 더 비어 보임 → 한국어 화면과 나란히 놓고 눈으로 맞춘 값.
@@ -81,3 +84,30 @@ html:lang(en) body .art-next__content strong{text-wrap:balance}
 /* 같은 문구, 태블릿·PC: 대문자 첫 줄이 상자 폭에 거의 꽉 차(1440에서 여유 2px) 글꼴이 조금만 달라도 'BEEN DONE,' 이 밀려 내려가므로 6%쯤 여유를 둠. 밀리더라도 줄 길이는 고르게 */
 html:lang(en):not(#_i18n) body .reimagine-flow-korean{text-wrap:balance}
 @media (min-width:768px){html:lang(en):not(#_i18n) body .reimagine-flow-korean{font-size:min(var(--ko-size,48px),3vw)!important}}
+/* 태블릿 폭(701~1000px) 컬처 '일하는 방식' 카드 구간 — KR·EN·JP 공통(운영 사이트 한국어에도 있는 문제, 2026-11-12)
+   approved-v3.css 의 태블릿 배치(제목 위, 카드 아래로 쌓기)에서 빠져 있던 것 보완:
+   ① 첫 묶음 제목(HOW WE WORK / WE IMAGINE WHAT SHOULD EXIST)과 설명이 숨겨진 채 남아 빈칸으로 보임 → 보이게
+   ② 두 번째 묶음(AND WE MAKE IT REAL)이 첫 묶음 카드에 바로 붙음 → 간격 */
+@media (min-width:701px) and (max-width:1000px){
+html body.approved-culture .cx-lay--b [data-slot]{visibility:visible!important}
+html body.approved-culture .cx-lay--b .cx-fade-b{opacity:1!important;transform:none!important}
+html body.approved-culture .cx-scroll--real{margin-top:72px!important}
+}
+/* ③ 이 폭에서는 카드가 한 흐름으로 쌓여 있는데 설명만 스크롤에 따라 열렸다 닫혀 아래 내용이 출렁임 → 설명을 항상 펼쳐 둠
+   (창 높이 700px 이하일 때 쓰는 기존 배치 approved.css 783행과 같은 처리. 되돌리려면 아래 블록만 지우면 됨) */
+@media (min-width:701px) and (max-width:1000px){
+html body.approved-culture .cx-card__more{height:auto!important;perspective:none!important}
+html body.approved-culture .cx-card__more>div{transform:none!important;opacity:1!important}
+}
+/* 일본어: 한 줄 고정인 제목 안에서는 구절 줄바꿈용 <wbr> 이 고정을 무시하고 끊음 → 그 안의 <wbr> 은 끔.
+   (컬처 '私たちの働き方': 자리가 두 줄이 되면 움직이는 글자의 크기·위치 계산이 틀어짐. 2026-11-12) */
+html:lang(ja) body :is(.cx-intro__title,.cx-intro__sub,.cx-screen__label,.cx-screen__title,.cx-real__title,.cx-actor) wbr{display:none}
+/* 일본어 컬처 '일하는 방식' 첫 화면(私たちの働き方)을 둘째 화면·한국어와 같은 글자감·간격으로 (2026-11-12)
+   ① 움직이는 글자(.cx-actor--how): 일본어 글꼴은 줄 상자가 높아 글자가 자리보다 아래로 내려앉음 → 영문과 같은 줄 높이로 고정
+   ② 한자·가나는 칸을 꽉 채워 같은 크기라도 영문 대문자보다 커 보임 → 0.82배(영문 대문자 높이와 같게). 왼쪽 칸 밖으로도 안 넘침 */
+html:lang(ja) body .cx-actor--how{line-height:1.15!important}
+@media (min-width:1001px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__title{font-size:calc(min(3.9vw,64px) * .82)!important}}
+@media (max-width:700px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__title{font-size:26px!important}}
+/* ③ 한자·가나는 글자 위아래 여백이 적어 같은 여백 값이면 더 붙어 보임 → 실제 글자 사이 간격이 한국어와 같아지게(PC 23·24px, 모바일 18·21px) */
+@media (min-width:1001px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__q{margin-bottom:17px!important}html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__sub{margin-top:16px!important}}
+@media (max-width:700px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__q{margin-bottom:12px!important}html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__sub{margin-top:15px!important}}
