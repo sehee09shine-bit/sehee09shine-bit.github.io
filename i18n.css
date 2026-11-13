@@ -121,3 +121,12 @@ html:is(:lang(en),:lang(ja)):not(#_i18n) body.approved-culture .cx-intro__title{
 html:is(:lang(en),:lang(ja)):not(#_i18n) body.approved-culture :is(.cx-intro__q,.cx-screen__ko){font-size:17px!important;font-weight:400!important;letter-spacing:-.01em!important;color:#5c6168!important}
 html:lang(en):not(#_i18n) body.approved-culture .cx-intro__q{line-height:1.48!important}
 }
+/* 컬처 '일하는 방식' 둘째 화면의 작은 라벨(HOW WE WORK·私たちの働き方)이 일반 해상도(1배) 모니터에서 뭉개져 보임 — KR·EN·JP (고객 제보 2026-11-13)
+   원인: 움직이는 글자(.cx-actor)는 큰 크기(최대 108px)로 그려 두고 0.15~0.2배로 줄여 보여주는데, will-change:transform 때문에
+   브라우저가 큰 글자 그림을 그대로 줄여 씀 → 획 굵기가 고르지 않음. 레티나에서는 티가 안 남.
+   → will-change 를 꺼서 줄어든 크기에 맞춰 글자를 다시 그리게 함. (되돌리려면 아래 한 줄만 지우면 됨) */
+html body.approved-culture .cx-actor{will-change:auto!important}
+/* 컬처 맨 아래 JOIN US 사진: 사진 아래쪽의 흐릿한 검은 물체(앞쪽에 걸린 컵·테이블 그림자)를 안 보이게 — KR·EN·JP (요청 2026-11-13)
+   사진 파일은 그대로 두고, 사진을 칸보다 1.255배 높게 놓아 아래 20%(원본 1362px 중 1085px 아래)를 칸 밖으로 잘라냄.
+   (되돌리려면 아래 한 줄만 지우면 됨) */
+html:not(#_i18n) body.approved-culture #culture-end .art-next__visual img{top:0!important;bottom:auto!important;height:125.5%!important;object-position:50% 0!important}
