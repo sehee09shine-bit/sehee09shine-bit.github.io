@@ -104,10 +104,12 @@ html body.approved-culture .cx-card__more>div{transform:none!important;opacity:1
 html:lang(ja) body :is(.cx-intro__title,.cx-intro__sub,.cx-screen__label,.cx-screen__title,.cx-real__title,.cx-actor) wbr{display:none}
 /* 일본어 컬처 '일하는 방식' 첫 화면(私たちの働き方)을 둘째 화면·한국어와 같은 글자감·간격으로 (2026-11-12)
    ① 움직이는 글자(.cx-actor--how): 일본어 글꼴은 줄 상자가 높아 글자가 자리보다 아래로 내려앉음 → 영문과 같은 줄 높이로 고정
-   ② 한자·가나는 칸을 꽉 채워 같은 크기라도 영문 대문자보다 커 보임 → 0.82배(영문 대문자 높이와 같게). 왼쪽 칸 밖으로도 안 넘침 */
+   ② 한자·가나는 칸을 꽉 채워 같은 크기라도 영문 대문자보다 커 보임 → 0.88배(PC), 모바일 28px (처음엔 영문 대문자 높이와 같은 0.82배·26px 였고, 고객 요청으로 조금 키움 2026-11-13). 왼쪽 칸 밖으로도 안 넘침 */
 html:lang(ja) body .cx-actor--how{line-height:1.15!important}
-@media (min-width:1001px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__title{font-size:calc(min(3.9vw,64px) * .82)!important}}
-@media (max-width:700px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__title{font-size:26px!important}}
+@media (min-width:1001px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__title{font-size:calc(min(3.9vw,64px) * .88)!important}}
+@media (max-width:700px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__title{font-size:28px!important}}
 /* ③ 한자·가나는 글자 위아래 여백이 적어 같은 여백 값이면 더 붙어 보임 → 실제 글자 사이 간격이 한국어와 같아지게(PC 23·24px, 모바일 18·21px) */
 @media (min-width:1001px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__q{margin-bottom:17px!important}html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__sub{margin-top:16px!important}}
 @media (max-width:700px){html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__q{margin-bottom:12px!important}html:lang(ja):not(#_i18n) body.approved-culture .cx-intro__sub{margin-top:15px!important}}
+/* 컬처 '일하는 방식' 둘째 화면: 큰 제목(…EXIST)과 아래 설명 사이 간격을 조금 줄임 — EN·JP, PC (고객 요청 2026-11-13). 글자 사이 실제 간격 34px → 26px */
+@media (min-width:1001px){html:is(:lang(en),:lang(ja)):not(#_i18n) body.approved-culture .cx-screen__ko{margin-top:12px!important}}
